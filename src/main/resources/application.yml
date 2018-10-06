@@ -2,13 +2,19 @@ spring:
   # 数据库连接
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/husky?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true
-    username: root
+    username: caojiantao
     password: Cjt201802136.
   # redis配置
   redis:
-    host: 127.0.0.1
+    host: 140.143.132.236
     port: 6379
     password:
 # mybatis配置
 mybatis:
   mapper-locations: classpath:mapper/**/*.xml
+
+redis:
+  # redis注解缓存集合，对应序列化配置
+  serializerConfig:
+    - cacheName: test
+      classType: cn.caojiantao.husky.dto.TestDTO

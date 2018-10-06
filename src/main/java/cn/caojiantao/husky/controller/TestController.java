@@ -1,7 +1,6 @@
 package cn.caojiantao.husky.controller;
 
-import cn.caojiantao.husky.mapper.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import cn.caojiantao.husky.dto.TestDTO;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,12 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("")
 public class TestController {
 
-    @Autowired
-    private Test test;
-
-    @Cacheable(value = "test", key = "#p0")
+    @Cacheable(cacheNames = "test")
     @RequestMapping("/test")
-    public String test(String name) {
-        return test.test();
+    public TestDTO test(String name) {
+        return new TestDTO(name);
     }
 }
