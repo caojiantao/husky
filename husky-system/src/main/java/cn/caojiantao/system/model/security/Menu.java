@@ -1,19 +1,21 @@
-package cn.caojiantao.base.model.dictionary;
+package cn.caojiantao.system.model.security;
 
 import cn.caojiantao.common.base.BaseModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
+ * 菜单实体类
+ *
  * @author caojiantao
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class DictValue extends BaseModel {
+public class Menu extends BaseModel {
 
-    private Integer setId;
     private String name;
-    private String value;
+    private Integer parentId;
+    private String href;
+    private String iconClass;
     private Integer order;
-    private String desc;
 }

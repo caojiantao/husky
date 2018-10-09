@@ -7,3 +7,6 @@ spring:
   redis:
     host: 140.143.132.236
     port: 6379
+
+mybatis:
+  config-location: classpath*: mapper/**/*.xml

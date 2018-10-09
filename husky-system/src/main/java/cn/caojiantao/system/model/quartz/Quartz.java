@@ -1,4 +1,4 @@
-package cn.caojiantao.base.model.quartz;
+package cn.caojiantao.system.model.quartz;
 
 import cn.caojiantao.common.base.BaseModel;
 import lombok.Data;

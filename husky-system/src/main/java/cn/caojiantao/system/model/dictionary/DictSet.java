@@ -1,4 +1,4 @@
-package cn.caojiantao.base.model.dictionary;
+package cn.caojiantao.system.model.dictionary;
 
 
 import cn.caojiantao.common.base.BaseModel;

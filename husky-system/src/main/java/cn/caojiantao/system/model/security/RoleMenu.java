@@ -1,4 +1,4 @@
-package cn.caojiantao.base.model.security;
+package cn.caojiantao.system.model.security;
 
 import cn.caojiantao.common.base.BaseModel;
 import lombok.Data;
@@ -9,7 +9,8 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class Role extends BaseModel {
+public class RoleMenu extends BaseModel{
 
-    private String name;
+    private Integer roleId;
+    private Integer menuId;
 }

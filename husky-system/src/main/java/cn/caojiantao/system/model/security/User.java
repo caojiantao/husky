@@ -1,4 +1,4 @@
-package cn.caojiantao.base.model.security;
+package cn.caojiantao.system.model.security;
 
 import cn.caojiantao.common.base.BaseModel;
 import lombok.Data;
