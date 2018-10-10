@@ -46,7 +46,7 @@
         FROM quartz
     </select>
 
-    <insert id="save" parameterType="com.cjt.entity.model.system.quartz.QuartzDO" useGeneratedKeys="true" keyProperty="id">
+    <insert id="save" parameterType="cn.caojiantao.system.model.quartz.Quartz" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO quartz (`name`, `group`, `cron_expre`, `status`, `desc`, `job_class`, `gmt_create`)
         VALUES (#{name}, #{group}, #{cronExpre}, #{status}, #{desc}, #{jobClass}, #{gmtCreate})
     </insert>

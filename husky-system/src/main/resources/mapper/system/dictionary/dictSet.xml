@@ -47,7 +47,7 @@
         WHERE id = #{id}
     </select>
 
-    <select id="listObjects" parameterType="com.cjt.entity.dto.DictionaryDTO" resultMap="baseMap">
+    <select id="listObjects" parameterType="cn.caojiantao.system.query.DictionaryQuery" resultMap="baseMap">
         SELECT
         `id`,
         `parent_value_id`,
@@ -65,7 +65,7 @@
         </if>
     </select>
 
-    <select id="countObjects" parameterType="com.cjt.entity.dto.DictionaryDTO" resultType="int">
+    <select id="countObjects" parameterType="cn.caojiantao.system.query.DictionaryQuery" resultType="int">
         SELECT COUNT(*) FROM dict_set
         <trim prefix="WHERE" prefixOverrides="AND">
             <if test='code!=null and code!=""'>AND `code` = #{code}</if>
