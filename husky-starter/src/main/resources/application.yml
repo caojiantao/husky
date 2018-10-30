@@ -1,12 +1,23 @@
-spring:
+# 用户配置
+project-env:
   datasource:
-    url: jdbc:mysql://localhost:3306/peppa?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true
+    host: 127.0.0.1
+    port: 3306
     username: caojiantao
     password: 123456
-
   redis:
     host: 140.143.132.236
     port: 6379
+
+spring:
+  datasource:
+    url: jdbc:mysql://${project-env.datasource.host}:${project-env.datasource.port}/peppa?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true
+    username: ${project-env.datasource.username}
+    password: ${project-env.datasource.password}
+
+  redis:
+    host: ${project-env.redis.host}
+    port: ${project-env.redis.port}
 
   http:
     encoding:
@@ -15,3 +26,6 @@ spring:
 
 mybatis:
   mapper-locations: classpath*:mapper/**/*.xml
+
+
+
