@@ -9,12 +9,13 @@
         <result column="parent_id" property="parentId"/>
         <result column="href" property="href"/>
         <result column="icon_class" property="iconClass"/>
+        <result column="component_path" property="componentPath" javaType="String"/>
         <result column="order" property="order"/>
         <result column="gmt_create" property="gmtCreate"/>
         <result column="gmt_modified" property="gmtModified"/>
     </resultMap>
 
-    <select id="getById" resultMap="baseMap">
+    <select id="getById" resultMap="baseMap" parameterType="int">
         SELECT
             `id`,
             `name`,
@@ -22,15 +23,17 @@
             `href`,
             `icon_class`,
             `order`,
+            `component_path`,
             `gmt_create`,
             `gmt_modified`
         FROM menu
         WHERE id = #{id}
     </select>
 
-    <insert id="insert" parameterType="cn.caojiantao.system.model.security.Menu" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO menu (`name`, `parent_id`, `href`, `icon_class`, `order`, `gmt_create`)
-        VALUES (#{name}, #{parentId}, #{href}, #{iconClass}, #{order}, #{gmtCreate})
+    <insert id="insert" parameterType="cn.caojiantao.system.model.security.Menu" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO menu (`name`, `parent_id`, `href`, `icon_class`, `component_path`, `order`, `gmt_create`)
+        VALUES (#{name}, #{parentId}, #{href}, #{iconClass}, #{componentPath}, #{order}, #{gmtCreate})
     </insert>
 
     <update id="updateById" parameterType="cn.caojiantao.system.model.security.Menu">
@@ -40,6 +43,7 @@
             `parent_id` = #{parentId},
             `href` = #{href},
             `icon_class` = #{iconClass},
+            `component_path` = #{componentPath},
             `order` = #{order},
             `gmt_modified` = #{gmtModified}
         </trim>
@@ -50,27 +54,38 @@
         WHERE `id` = #{id}
     </delete>
 
-    <select id="getMenusByRoleIds" resultMap="baseMap" parameterType="list">
+    <select id="getMenusByUserId" resultMap="baseMap" parameterType="int">
         SELECT
-        `id`,
-        `name`,
-        `parent_id`,
-        `href`,
-        `icon_class`,
-        `order`,
-        `gmt_create`,
-        `gmt_modified`
-        FROM menu
-        <if test="list!=null and list.size()>0">
-            WHERE id IN
+            t1.*
+        FROM
+            menu AS t1,
             (
-            SELECT DISTINCT menu_id FROM role_menu
-            WHERE role_id IN
-            <foreach collection="list" item="id" open="(" close=")" separator=",">
-                #{id}
-            </foreach>
-            )
-        </if>
-        ORDER BY `order`
+                SELECT
+                    t1.menu_id
+                FROM
+                    role_menu AS t1,
+                    ( SELECT role_id FROM user_role WHERE user_id = #{userId} ) AS t2
+                WHERE
+                    t1.role_id = t2.role_id
+            ) AS t2
+        WHERE
+            t1.id = t2.menu_id
+        ORDER BY t1.`order`
+    </select>
+
+    <select id="getAllMenus" resultMap="baseMap">
+        SELECT * FROM menu ORDER BY `order`
+    </select>
+
+    <select id="getMenusByRoleId" resultMap="baseMap" parameterType="int">
+        SELECT
+            t1.*
+        FROM
+            menu AS t1,
+            ( SELECT t1.menu_id FROM role_menu AS t1 WHERE t1.role_id = #{roleId} ) AS t2
+        WHERE
+            t1.id = t2.menu_id
+        ORDER BY
+            t1.`order`
     </select>
 </mapper>

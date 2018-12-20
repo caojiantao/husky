@@ -4,15 +4,20 @@
 <mapper namespace="cn.caojiantao.system.mapper.security.RoleMenuMapper">
 
     <insert id="saveRoleMenus" parameterType="cn.caojiantao.system.model.security.Role">
-        INSERT INTO role_menu (`role_id`, `menu_id`, `gmt_create`) VALUES
+        INSERT INTO role_menu (`role_id`, `menu_id`) VALUES
         <foreach collection="list" item="item" separator=",">
-            (#{item.roleId}, #{item.menuId}, #{item.gmtCreate})
+            (#{item.roleId}, #{item.menuId})
         </foreach>
     </insert>
 
     <delete id="deleteByRoleId" parameterType="int">
         DELETE FROM role_menu
         WHERE role_id = #{roleId}
+    </delete>
+
+    <delete id="deleteByMenuId" parameterType="int">
+        DELETE FROM role_menu
+        WHERE menu_id = #{menuId}
     </delete>
 
     <select id="listMenuIdsByRoleId" parameterType="int">

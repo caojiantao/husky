@@ -12,5 +12,5 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface UserMapper extends BaseMapper<User, UserQuery> {
 
-    User login(@Param("username") String username, @Param("password") String password);
+    User getUserByUsernameAndPassword(@Param("username") String username, @Param("password") String password);
 }

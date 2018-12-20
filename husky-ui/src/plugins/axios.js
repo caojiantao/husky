@@ -2,14 +2,16 @@
 
 import Vue from 'vue';
 import axios from "axios";
+import {
+  Message
+} from 'element-ui'
+import {
+  getToken
+} from '@/utils/auth.js'
 
-// Full config:  https://github.com/axios/axios#request-config
-// axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
-// axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
-// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-
+// husky项目接口
 let config = {
-  // baseURL: process.env.baseURL || process.env.apiUrl || ""
+  baseURL: process.env.VUE_APP_baseURL
   // timeout: 60 * 1000, // Timeout
   // withCredentials: true, // Check cross-site Access-Control
 };
@@ -17,37 +19,37 @@ let config = {
 const _axios = axios.create(config);
 
 _axios.interceptors.request.use(
-  function(config) {
-    // Do something before request is sent
+  function (config) {
+    // token赋值
+    config.headers['X-Token'] = getToken()
     return config;
   },
-  function(error) {
-    // Do something with request error
+  function (error) {
     return Promise.reject(error);
   }
 );
 
-// Add a response interceptor
 _axios.interceptors.response.use(
-  function(response) {
-    // Do something with response data
-    return response;
+  function (response) {
+    let responseData = response.data
+    if (responseData.code === 200) {
+      return responseData.data
+    } else {
+      Message({
+        message: responseData.message,
+        type: 'error'
+      })
+      return Promise.reject();
+    }
   },
-  function(error) {
+  function (error) {
     // Do something with response error
     return Promise.reject(error);
   }
 );
 
-Plugin.install = function(Vue) {
-  Vue.axios = _axios;
-  window.axios = _axios;
+Plugin.install = function (Vue) {
   Object.defineProperties(Vue.prototype, {
-    axios: {
-      get() {
-        return _axios;
-      }
-    },
     $axios: {
       get() {
         return _axios;
@@ -59,3 +61,7 @@ Plugin.install = function(Vue) {
 Vue.use(Plugin)
 
 export default Plugin;
+
+export {
+  _axios
+}

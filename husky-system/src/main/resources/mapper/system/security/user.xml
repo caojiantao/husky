@@ -23,7 +23,7 @@
         WHERE id = #{id}
     </select>
 
-    <select id="listObjects" resultMap="baseMap" parameterType="cn.caojiantao.system.query.UserQuery">
+    <select id="getObjects" resultMap="baseMap" parameterType="cn.caojiantao.system.query.UserQuery">
         SELECT
         `id`,
         `username`,
@@ -33,10 +33,10 @@
         FROM user
         <trim prefix="WHERE" prefixOverrides="AND">
             <if test="id!=null">AND `id` = #{id}</if>
-            <if test="username!=null and username!=''">AND `username` = #{username}</if>
+            <if test="username!=null and username!=''">AND `username` LIKE CONCAT('%',#{username},'%')</if>
             <if test="password!=null">AND `password` = #{password}</if>
         </trim>
-        <if test="start!=null and offset!=null">LIMIT #{start}, #{offset}</if>
+        LIMIT #{start}, #{pagesize}
     </select>
 
     <select id="countObjects" resultType="int" parameterType="cn.caojiantao.system.query.UserQuery">
@@ -44,13 +44,14 @@
         FROM user
         <trim prefix="WHERE" prefixOverrides="AND">
             <if test="id!=null">AND `id` = #{id}</if>
-            <if test="username!=null">AND `username` = #{username}</if>
+            <if test="username!=null and username!=''">AND `username` LIKE CONCAT('%',#{username},'%')</if>
             <if test="password!=null">AND `password` = #{password}</if>
         </trim>
     </select>
 
     <!-- 想要获取最后一次插入的主键id，注意mybatis和ibatis的区别 -->
-    <insert id="insert" parameterType="cn.caojiantao.system.model.security.User" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="cn.caojiantao.system.model.security.User" useGeneratedKeys="true"
+            keyProperty="id">
         INSERT INTO user (`username`, `password`, `nickname`, `gmt_create`)
         VALUES (#{username}, #{password}, #{nickname}, #{gmtCreate})
     </insert>
@@ -62,7 +63,7 @@
 
     <update id="updateById" parameterType="cn.caojiantao.system.model.security.User">
         UPDATE user
-        <trim prefix="SET" suffix="WHERE id = #{id}" suffixOverrides=",">,
+        <trim prefix="SET" suffix="WHERE id = #{id}" suffixOverrides=",">
             `gmt_modified` = #{gmtModified},
             <if test="username!=null and username!=''">`username` = #{username},</if>
             <if test="password!=null and password!=''">`password` = #{password},</if>
@@ -70,7 +71,7 @@
         </trim>
     </update>
 
-    <select id="login" resultMap="baseMap">
+    <select id="getUserByUsernameAndPassword" resultMap="baseMap">
         SELECT
             `id`,
             `username`,

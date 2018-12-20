@@ -17,5 +17,6 @@ public class Menu extends BaseModel {
     private Integer parentId;
     private String href;
     private String iconClass;
+    private String componentPath;
     private Integer order;
 }

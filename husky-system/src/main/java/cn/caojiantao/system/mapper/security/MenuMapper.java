@@ -11,11 +11,9 @@ import java.util.List;
  */
 public interface MenuMapper extends BaseMapper<Menu, MenuQuery> {
 
-    /**
-     * 根据角色列表，获取菜单集合（去重）
-     *
-     * @param roleIds 角色ID结合
-     * @return 菜单集合
-     */
-    List<Menu> getMenusByRoleIds(List<Integer> roleIds);
+    List<Menu> getMenusByUserId(int userId);
+
+    List<Menu> getMenusByRoleId(int roleId);
+
+    List<Menu> getAllMenus();
 }

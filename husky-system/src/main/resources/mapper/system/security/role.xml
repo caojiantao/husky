@@ -10,7 +10,8 @@
         <result column="gmt_modified" property="gmtModified"/>
     </resultMap>
 
-    <insert id="insert" parameterType="cn.caojiantao.system.model.security.Menu" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="cn.caojiantao.system.model.security.Menu" useGeneratedKeys="true"
+            keyProperty="id">
         INSERT INTO role (`name`, `gmt_create`)
         VALUES (#{name}, #{gmtCreate})
     </insert>
@@ -28,7 +29,7 @@
         </trim>
     </update>
 
-    <select id="listObjects" resultMap="baseMap" parameterType="cn.caojiantao.system.query.RoleQuery">
+    <select id="getObjects" resultMap="baseMap" parameterType="cn.caojiantao.system.query.RoleQuery">
         SELECT
         `id`,
         `name`,
@@ -37,11 +38,9 @@
         FROM
         role
         <trim prefix="WHERE" prefixOverrides="AND">
-            <if test="name!=null">AND `name` like CONCAT('%',#{name},'%')</if>
+            <if test="name!=null and name!=''">AND `name` like CONCAT('%',#{name},'%')</if>
         </trim>
-        <if test="offset!=null and offset!=0">
-            LIMIT #{start}, #{offset}
-        </if>
+        <if test="pagesize!=null and pagesize!=0">LIMIT #{start}, #{pagesize}</if>
     </select>
 
     <select id="countObjects" resultType="int" parameterType="cn.caojiantao.system.query.RoleQuery">
@@ -61,22 +60,5 @@
         FROM
             role
         WHERE id = #{id}
-    </select>
-
-    <select id="getRolesByUserId" resultMap="baseMap" parameterType="int">
-        SELECT
-            `id`,
-            `name`,
-            `gmt_create`,
-            `gmt_modified`
-        FROM
-            role
-        WHERE id IN (
-            SELECT role_id
-            FROM
-                user_role
-            WHERE
-                user_id = #{userId}
-        )
     </select>
 </mapper>

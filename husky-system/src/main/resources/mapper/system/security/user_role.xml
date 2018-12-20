@@ -3,10 +3,10 @@
 <!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
 <mapper namespace="cn.caojiantao.system.mapper.security.UserRoleMapper">
 
-    <insert id="saveUserRoles">
+    <insert id="addUserRoles">
         INSERT INTO user_role (user_id, role_id) VALUES
-        <foreach collection="roleIds" item="roleId" separator=",">
-            (#{userId}, #{roleId})
+        <foreach collection="list" item="userRole" separator=",">
+            (#{userRole.userId}, #{userRole.roleId})
         </foreach>
     </insert>
 
@@ -15,7 +15,7 @@
         WHERE user_id = #{userId}
     </delete>
 
-    <select id="listRoleIdByUserId" parameterType="int" resultType="int">
+    <select id="getRoleIdsByUserId" parameterType="int" resultType="int">
         SELECT role_id
         FROM user_role
         WHERE user_id = #{userId}

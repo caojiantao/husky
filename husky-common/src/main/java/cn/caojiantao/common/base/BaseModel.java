@@ -7,8 +7,6 @@ import java.time.LocalDateTime;
 
 /**
  * @author caojiantao
- * @date 2018-10-08 13:13:29
- * @description
  */
 @Data
 public class BaseModel {

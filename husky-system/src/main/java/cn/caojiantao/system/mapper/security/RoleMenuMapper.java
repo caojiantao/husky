@@ -15,4 +15,6 @@ public interface RoleMenuMapper extends BaseMapper<RoleMenu, Object> {
     void saveRoleMenus(List<RoleMenu> roleMenus);
 
     int deleteByRoleId(int roleId);
+
+    void deleteByMenuId(int menuId);
 }

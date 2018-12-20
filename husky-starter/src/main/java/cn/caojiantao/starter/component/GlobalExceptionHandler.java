@@ -1,9 +1,9 @@
 package cn.caojiantao.starter.component;
 
-import cn.caojiantao.common.dto.ResultDTO;
 import com.alibaba.fastjson.JSON;
+import com.github.caojiantao.dto.ResultDTO;
+import com.github.caojiantao.util.ExceptionUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerExceptionResolver;

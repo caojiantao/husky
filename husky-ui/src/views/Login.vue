@@ -1,41 +1,51 @@
 <template>
   <div class="login">
-    <el-form ref="loginForm" :model="loginForm.model" :label-width="loginForm.labelWidth">
-        <el-form-item label="账号">
-          <el-input v-model="loginForm.model.username"></el-input>
-        </el-form-item>
-          <el-form-item label="密码">
-          <el-input type="password" v-model="loginForm.model.password"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="submitForm">提交</el-button>
-          <el-button @click="resetForm">重置</el-button>
-        </el-form-item>
+    <el-form ref="loginForm" :model="loginModel" :label-width="formLabelWidth">
+      <el-form-item label="账号">
+        <el-input v-model="loginModel.username"></el-input>
+      </el-form-item>
+      <el-form-item label="密码">
+        <el-input type="password" v-model="loginModel.password"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="submitForm">提交</el-button>
+      </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
+import { saveToken, initMenusAndRoutes } from "@/utils/auth.js";
 
 export default {
-  name: 'login',
-  components: {
-  },
+  name: "login",
+  components: {},
   data: () => {
     return {
-      loginForm: {
-        model: {},
-        labelWidth: '80px'
-      }
-    }
+      loginModel: {},
+      formLabelWidth: "80px"
+    };
   },
   methods: {
     submitForm: function() {
-      console.log(this.loginForm.model)
-    },
-    resetForm: function() {
-
+      this.$axios
+        .post("/system/user/login", this.loginModel)
+        .then(data => {
+          let token = data.token;
+          let user = data.user;
+          // 保存用户登录凭据
+          saveToken(token);
+          this.$store.commit("setUser", user);
+          // 初始化当前用户菜单及路由
+          initMenusAndRoutes(user.id, this.$store, this.$axios, this.$router);
+          // 地址跳转
+          let redirect = this.$route.query.redirect;
+          this.$router.push({
+            path: redirect ? redirect : "/"
+          });
+        })
+        .catch(() => {});
     }
   }
-}
+};
 </script>

@@ -10,9 +10,9 @@ import java.util.List;
  */
 public interface UserRoleMapper extends BaseMapper<UserRole, Object> {
 
-    List<Integer> listRoleIdByUserId(int userId);
+    List<Integer> getRoleIdsByUserId(int userId);
 
-    void saveUserRoles(List<UserRole> userRoles);
+    void addUserRoles(List<UserRole> userRoles);
 
-    int deleteByUserId(long userId);
+    void deleteByUserId(int userId);
 }
