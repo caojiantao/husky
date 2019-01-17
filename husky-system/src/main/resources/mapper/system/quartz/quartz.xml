@@ -26,19 +26,18 @@
         WHERE id = #{id}
     </select>
 
-    <select id="listObjects" resultMap="baseMap">
+    <select id="getObjects" resultMap="baseMap">
         SELECT
         `id`,
         `name`,
         `group`,
         `cron_expression`,
         `job_class`,
+        `status`,
         `gmt_create`,
         `gmt_modified`
         FROM quartz
-        <if test="start!=null and offset!=null">
-            LIMIT #{start}, #{offset}
-        </if>
+        <if test="pagesize!=null and pagesize!=0">LIMIT #{start}, #{pagesize}</if>
     </select>
 
     <select id="countObjects" resultType="int">

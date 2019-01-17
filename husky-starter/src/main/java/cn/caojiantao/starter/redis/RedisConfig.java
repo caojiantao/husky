@@ -9,8 +9,10 @@ import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
+import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,9 +23,9 @@ import java.util.Map;
  */
 @Slf4j
 @Data
-@Configuration
+@Component
 @ConfigurationProperties("redis")
-public class RedisConfig {
+public class RedisConfig implements Serializable {
 
     private List<SerializerConfig> serializerConfig;
 
@@ -37,7 +39,7 @@ public class RedisConfig {
             for (SerializerConfig config : serializerConfig) {
                 try {
                     Class<?> clazz = Class.forName(config.getClassType());
-                    serializer = new ProtoStuffSerializer(clazz);
+                    serializer = new ProtoStuffSerializer(Serializable.class);
                     configuration = configuration.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(serializer));
                     configurationMap.put(config.getCacheName(), configuration);
                 } catch (ClassNotFoundException e) {

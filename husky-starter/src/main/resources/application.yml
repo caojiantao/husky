@@ -6,7 +6,7 @@ project-env:
     username: caojiantao
     password: Cjt201802136.
   redis:
-    host: 140.143.132.236
+    host: 127.0.0.1
     port: 6379
 
 spring:

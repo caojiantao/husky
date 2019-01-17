@@ -19,10 +19,4 @@
         DELETE FROM role_menu
         WHERE menu_id = #{menuId}
     </delete>
-
-    <select id="listMenuIdsByRoleId" parameterType="int">
-        SELECT menu_id
-        FROM role_menu
-        WHERE role_id = #{roleId}
-    </select>
 </mapper>

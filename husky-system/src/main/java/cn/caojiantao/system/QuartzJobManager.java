@@ -1,0 +1,114 @@
+package cn.caojiantao.system;
+
+import cn.caojiantao.system.model.quartz.Quartz;
+import com.github.caojiantao.util.ExceptionUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.quartz.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Slf4j
+@Component
+public class QuartzJobManager {
+
+    private final Scheduler scheduler;
+
+    @Autowired
+    public QuartzJobManager(Scheduler scheduler) {
+        this.scheduler = scheduler;
+    }
+
+    /**
+     * 添加定时任务
+     */
+    @SuppressWarnings("unchecked")
+    public void addJob(Quartz job) {
+        // 根据name和group获取trigger key，判断是否已经存在该trigger
+        TriggerKey triggerKey = TriggerKey.triggerKey(job.getName(), job.getGroup());
+        try {
+            Trigger trigger = scheduler.getTrigger(triggerKey);
+            if (trigger == null) {
+                // 新建一个job，并将ID作为携带数据
+                JobDetail jobDetail = JobBuilder.newJob((Class<? extends Job>) Class.forName(job.getJobClass()))
+                        .withIdentity(job.getName(), job.getGroup())
+                        .withDescription(job.getDesc())
+                        .usingJobData("id", job.getId())
+                        .build();
+                // 新建一个trigger
+                CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(job.getCronExpression())
+                        // 定时任务错过处理策略，避免resume时再次执行trigger
+                        .withMisfireHandlingInstructionDoNothing();
+                trigger = TriggerBuilder.newTrigger()
+                        .withIdentity(triggerKey)
+                        .withSchedule(scheduleBuilder)
+                        .build();
+                // scheduler设置job和trigger
+                scheduler.scheduleJob(jobDetail, trigger);
+            } else {
+                CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(job.getCronExpression())
+                        .withMisfireHandlingInstructionDoNothing();
+                TriggerBuilder builder = trigger.getTriggerBuilder().withIdentity(triggerKey);
+                trigger = builder.withSchedule(scheduleBuilder).build();
+                // 根据trigger key重新设置trigger
+                scheduler.rescheduleJob(triggerKey, trigger);
+            }
+            // job状态暂停
+            if (!job.getStatus()) {
+                pauseJob(job);
+            }
+        } catch (SchedulerException | ClassNotFoundException e) {
+            log.error(job.getJobClass() + "添加报错：" + ExceptionUtils.getStackTrace(e));
+        }
+    }
+
+    /**
+     * 暂停定时任务
+     */
+    public void pauseJob(Quartz Quartz) {
+        try {
+            scheduler.pauseTrigger(TriggerKey.triggerKey(Quartz.getName(), Quartz.getGroup()));
+        } catch (SchedulerException e) {
+            log.error(Quartz.getJobClass() + "暂停报错：" + ExceptionUtils.getStackTrace(e));
+        }
+    }
+
+    /**
+     * 继续定时任务
+     */
+    public void resumeJob(Quartz Quartz) {
+        try {
+            scheduler.resumeTrigger(TriggerKey.triggerKey(Quartz.getName(), Quartz.getGroup()));
+        } catch (SchedulerException e) {
+            log.error(Quartz.getJobClass() + "继续报错：" + ExceptionUtils.getStackTrace(e));
+        }
+    }
+
+    /**
+     * 移除定时任务
+     */
+    public void removeQuartz(Quartz Quartz) {
+        removeQuartz(TriggerKey.triggerKey(Quartz.getName(), Quartz.getGroup()));
+    }
+
+    public void removeQuartz(TriggerKey key) {
+        try {
+            scheduler.pauseTrigger(key);
+            scheduler.unscheduleJob(key);
+        } catch (SchedulerException e) {
+            log.error(ExceptionUtils.getStackTrace(e));
+        }
+    }
+
+    /**
+     * 手动执行定时任务
+     */
+    public boolean executeJob(Quartz Quartz) {
+        try {
+            scheduler.triggerJob(new JobKey(Quartz.getName(), Quartz.getGroup()));
+            return true;
+        } catch (SchedulerException e) {
+            log.error(Quartz.getJobClass() + "手动执行报错：" + ExceptionUtils.getStackTrace(e));
+            return false;
+        }
+    }
+}

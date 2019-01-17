@@ -13,11 +13,10 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class Quartz extends BaseModel {
 
-    private String name;
     private String group;
+    private String name;
     private Boolean status;
     private String cronExpression;
     private String desc;
     private String jobClass;
-    private Boolean deleted;
 }

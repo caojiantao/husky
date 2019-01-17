@@ -10,11 +10,9 @@ import java.util.List;
  */
 public interface RoleMenuMapper extends BaseMapper<RoleMenu, Object> {
 
-    List<Integer> listMenuIdsByRoleId(int roleId);
-
     void saveRoleMenus(List<RoleMenu> roleMenus);
 
-    int deleteByRoleId(int roleId);
+    void deleteByRoleId(int roleId);
 
     void deleteByMenuId(int menuId);
 }
