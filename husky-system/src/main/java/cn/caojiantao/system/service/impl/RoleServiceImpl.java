@@ -84,6 +84,11 @@ public class RoleServiceImpl implements IRoleService {
         return roleMapper.deleteById(id) > 0;
     }
 
+    /**
+     * 初始化"角色-菜单"映射
+     *
+     * @param roleDTO 角色数据实体
+     */
     private void initRoleMenu(RoleDTO roleDTO) {
         Integer roleId = roleDTO.getId();
         if (roleId != null && roleId > 0) {

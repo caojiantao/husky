@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/system/menu")
+@RequestMapping("/system/security/menu")
 public class MenuController {
 
     private final IMenuService menuService;
@@ -15,11 +15,6 @@ public class MenuController {
     @Autowired
     public MenuController(IMenuService menuService) {
         this.menuService = menuService;
-    }
-
-    @GetMapping("/getMenusByUserId")
-    public ResultDTO getMenusByUserId(int userId) {
-        return ResultDTO.success(menuService.getMenusByUserId(userId));
     }
 
     @GetMapping("/getAllMenus")
@@ -39,6 +34,11 @@ public class MenuController {
 
     @PostMapping("/deleteMenuById")
     public ResultDTO deleteMenuById(@RequestBody Menu menu) {
-        return menuService.deleteMenuById(menu.getId()) ? ResultDTO.success() : ResultDTO.failure("保存失败");
+        return menuService.deleteMenuById(menu.getId()) ? ResultDTO.success() : ResultDTO.failure("删除失败");
+    }
+
+    @GetMapping("/getMenusByUserId")
+    public ResultDTO getMenusByUserId(int userId) {
+        return ResultDTO.success(menuService.getMenusByUserId(userId));
     }
 }

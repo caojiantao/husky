@@ -5,8 +5,8 @@ import cn.caojiantao.system.model.security.User;
 import cn.caojiantao.system.service.IUserService;
 import com.alibaba.fastjson.JSON;
 import com.github.caojiantao.dto.ResultDTO;
-import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -30,7 +30,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         int userId = userService.parseToken(tokenStr);
         if (userId == 0) {
             ResultDTO result = ResultDTO.failure("用户未登录");
-            response.setContentType("application/json");
+            response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
             response.getWriter().write(JSON.toJSONString(result));
             return false;
         } else {

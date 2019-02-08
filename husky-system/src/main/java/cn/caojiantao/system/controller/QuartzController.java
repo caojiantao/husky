@@ -4,6 +4,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/system/quartz")
+@RequestMapping("/system/security/quartz")
 public class QuartzController {
 }

@@ -4,7 +4,6 @@ import cn.caojiantao.common.base.RedisLock;
 import cn.caojiantao.system.QuartzJobManager;
 import cn.caojiantao.system.model.quartz.Quartz;
 import cn.caojiantao.system.service.IQuartzService;
-import com.github.caojiantao.util.ExceptionUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.CronExpression;
 import org.quartz.Job;
@@ -71,7 +70,7 @@ public abstract class BaseJob implements Job {
                 log.info(jobClass + "获取执行锁失败");
             }
         } catch (Throwable e) {
-            log.error("执行定时任务出现错误：" + ExceptionUtils.getStackTrace(e));
+            log.error("执行定时任务出现错误：", e);
         } finally {
             // 保证会释放锁
             if (!lock.releaseLock(jobClass, requestId)) {

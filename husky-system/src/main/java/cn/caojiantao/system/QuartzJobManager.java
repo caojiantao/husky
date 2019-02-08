@@ -1,7 +1,6 @@
 package cn.caojiantao.system;
 
 import cn.caojiantao.system.model.quartz.Quartz;
-import com.github.caojiantao.util.ExceptionUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +56,7 @@ public class QuartzJobManager {
                 pauseJob(job);
             }
         } catch (SchedulerException | ClassNotFoundException e) {
-            log.error(job.getJobClass() + "添加报错：" + ExceptionUtils.getStackTrace(e));
+            log.error(job.getJobClass() + "添加报错：", e);
         }
     }
 
@@ -68,7 +67,7 @@ public class QuartzJobManager {
         try {
             scheduler.pauseTrigger(TriggerKey.triggerKey(Quartz.getName(), Quartz.getGroup()));
         } catch (SchedulerException e) {
-            log.error(Quartz.getJobClass() + "暂停报错：" + ExceptionUtils.getStackTrace(e));
+            log.error(Quartz.getJobClass() + "暂停报错：", e);
         }
     }
 
@@ -79,7 +78,7 @@ public class QuartzJobManager {
         try {
             scheduler.resumeTrigger(TriggerKey.triggerKey(Quartz.getName(), Quartz.getGroup()));
         } catch (SchedulerException e) {
-            log.error(Quartz.getJobClass() + "继续报错：" + ExceptionUtils.getStackTrace(e));
+            log.error(Quartz.getJobClass() + "继续报错：", e);
         }
     }
 
@@ -95,7 +94,7 @@ public class QuartzJobManager {
             scheduler.pauseTrigger(key);
             scheduler.unscheduleJob(key);
         } catch (SchedulerException e) {
-            log.error(ExceptionUtils.getStackTrace(e));
+            log.error("移除定时任务报错：" + e);
         }
     }
 
@@ -107,7 +106,7 @@ public class QuartzJobManager {
             scheduler.triggerJob(new JobKey(Quartz.getName(), Quartz.getGroup()));
             return true;
         } catch (SchedulerException e) {
-            log.error(Quartz.getJobClass() + "手动执行报错：" + ExceptionUtils.getStackTrace(e));
+            log.error(Quartz.getJobClass() + "手动执行报错：", e);
             return false;
         }
     }

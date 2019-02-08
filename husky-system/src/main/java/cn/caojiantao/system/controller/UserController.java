@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/system/user")
+@RequestMapping("/system/security/user")
 public class UserController {
 
     private final IUserService userService;

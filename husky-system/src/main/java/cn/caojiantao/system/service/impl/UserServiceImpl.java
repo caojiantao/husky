@@ -13,7 +13,6 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.github.caojiantao.util.ExceptionUtils;
 import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -65,7 +64,7 @@ public class UserServiceImpl implements IUserService {
                     .withExpiresAt(new Date(System.currentTimeMillis() + expire))
                     .sign(algorithm);
         } catch (Exception e) {
-            log.error(ExceptionUtils.getStackTrace(e));
+            log.error("生成token报错：", e);
         }
         return token;
     }
@@ -82,7 +81,7 @@ public class UserServiceImpl implements IUserService {
                 DecodedJWT jwt = verifier.verify(token);
                 userId = jwt.getClaim("userId").asInt();
             } catch (JWTVerificationException | UnsupportedEncodingException e) {
-                log.error(ExceptionUtils.getStackTrace(e));
+                log.error("解析token报错：", e);
             }
         }
         return userId;

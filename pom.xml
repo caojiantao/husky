@@ -122,7 +122,7 @@
         <dependency>
             <groupId>com.github.caojiantao</groupId>
             <artifactId>common</artifactId>
-            <version>1.2</version>
+            <version>1.1</version>
         </dependency>
         <!-- jwt token认证 -->
         <dependency>
