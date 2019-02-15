@@ -14,7 +14,7 @@
 
     <Pagination
       ref="husky-pagination"
-      url="/system/role/getRoleByPage"
+      url="/system/security/role/getRoleByPage"
       :query="query"
       :columns="columns"
     >
@@ -89,7 +89,7 @@ export default {
   created: function() {
     // 加载所有菜单树
     this.$axios
-      .get("/system/menu/getAllMenus")
+      .get("/system/security/menu/getAllMenus")
       .then(menus => {
         this.menus = menus;
       })
@@ -120,7 +120,7 @@ export default {
     editRole(item) {
       // 首先获取角色基本信息
       this.$axios
-        .get("/system/role/getRoleWithMenusById?id=" + item.id)
+        .get("/system/security/role/getRoleWithMenusById?id=" + item.id)
         .then(data => {
           // 展示对话框
           this.dialogModel = {
@@ -155,7 +155,7 @@ export default {
       })
         .then(() => {
           this.$axios
-            .post("/system/role/deleteRoleById", {
+            .post("/system/security/role/deleteRoleById", {
               id: item.id
             })
             .then(() => {
@@ -180,7 +180,7 @@ export default {
           );
           this.dialogModel.form["menus"] = menus;
           this.$axios
-            .post("/system/role/saveRole", this.dialogModel.form)
+            .post("/system/security/role/saveRole", this.dialogModel.form)
             .then(() => {
               this.dialogModel.visible = false;
               this.search();

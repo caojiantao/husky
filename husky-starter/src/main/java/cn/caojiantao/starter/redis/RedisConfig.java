@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -39,7 +38,7 @@ public class RedisConfig implements Serializable {
             for (SerializerConfig config : serializerConfig) {
                 try {
                     Class<?> clazz = Class.forName(config.getClassType());
-                    serializer = new ProtoStuffSerializer(Serializable.class);
+                    serializer = new ProtoStuffSerializer(clazz);
                     configuration = configuration.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(serializer));
                     configurationMap.put(config.getCacheName(), configuration);
                 } catch (ClassNotFoundException e) {

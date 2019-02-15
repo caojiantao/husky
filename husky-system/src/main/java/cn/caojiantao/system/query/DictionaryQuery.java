@@ -16,5 +16,5 @@ import lombok.NoArgsConstructor;
 public class DictionaryQuery extends BaseQuery {
 
     private String code;
-    private Integer setId;
+    private String name;
 }

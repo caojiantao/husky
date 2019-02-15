@@ -21,7 +21,10 @@ const _axios = axios.create(config);
 _axios.interceptors.request.use(
   function (config) {
     // token赋值
-    config.headers['X-Token'] = getToken()
+    let token = getToken();
+    if (token) {
+      config.headers['X-Token'] = token;
+    }
     return config;
   },
   function (error) {

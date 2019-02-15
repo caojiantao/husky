@@ -62,15 +62,17 @@ public class UserController {
     @PostMapping("/saveUser")
     public ResultDTO saveRole(@RequestBody UserDTO userDTO) {
         Integer id = userDTO.getId();
+        boolean operate;
         if ((id == null) || (id == 0)) {
-            return userService.addUser(userDTO) ? ResultDTO.success() : ResultDTO.failure("新增角色失败");
+            operate = userService.addUser(userDTO);
         } else {
-            return userService.updateUser(userDTO) ? ResultDTO.success() : ResultDTO.failure("更新角色失败");
+            operate = userService.updateUser(userDTO);
         }
+        return operate ? ResultDTO.success() : ResultDTO.failure("保存用户失败");
     }
 
     @PostMapping("/deleteUserById")
     public ResultDTO deleteUserById(@RequestBody User user) {
-        return userService.deleteUserById(user.getId()) ? ResultDTO.success() : ResultDTO.failure("删除角色失败");
+        return userService.deleteUserById(user.getId()) ? ResultDTO.success() : ResultDTO.failure("删除用户失败");
     }
 }

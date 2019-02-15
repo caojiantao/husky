@@ -20,7 +20,7 @@ new Vue({
     let token = getToken();
     if (token) {
       // 保存user至vuex
-      this.$axios.get('/system/user/getCurrentUser').then(user => {
+      this.$axios.get('/system/security/user/getCurrentUser').then(user => {
         store.commit('setUser', user);
         // 动态创建导航菜单以及对应路由
         initMenusAndRoutes(user.id, store, this.$axios, router);

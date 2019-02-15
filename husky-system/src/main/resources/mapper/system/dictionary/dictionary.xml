@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
+<mapper namespace="cn.caojiantao.system.mapper.dictionary.DictionaryMapper">
+
+    <resultMap id="baseMap" type="cn.caojiantao.system.model.dictionary.Dictionary">
+        <id column="id" property="id"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="code" property="code"/>
+        <result column="name" property="name"/>
+        <result column="value" property="value"/>
+        <result column="description" property="description"/>
+        <result column="order" property="order"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="cn.caojiantao.system.model.dictionary.Dictionary" keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO dictionary (parent_id, code, `name`, `value`, description, `order`, `gmt_create`)
+        VALUES (#{parentId}, #{code}, #{name}, #{value}, #{description}, #{order}, #{gmtCreate})
+    </insert>
+
+    <delete id="deleteById" parameterType="int">
+        DELETE
+        FROM dictionary
+        WHERE id = #{id}
+    </delete>
+
+    <update id="updateById" parameterType="cn.caojiantao.system.model.dictionary.Dictionary">
+        UPDATE dictionary
+        <trim prefix="SET" suffix="WHERE id = #{id}" suffixOverrides=",">
+            `gmt_modified` = #{gmtModified},
+            <if test='parentId!=null'>`parent_id` = #{parentId},</if>
+            <if test='name!=null'>`name` = #{name},</if>
+            <if test='value!=null'>`value` = #{value},</if>
+            <if test='description!=null'>`description` = #{description},</if>
+            <if test='order!=null'>`order` = #{order},</if>
+        </trim>
+    </update>
+
+    <select id="getById" parameterType="int" resultMap="baseMap">
+        SELECT `id`,
+               `parent_id`,
+               `code`,
+               `name`,
+               `value`,
+               `description`,
+               `order`,
+               `gmt_create`,
+               `gmt_modified`
+        FROM dictionary
+        WHERE id = #{id}
+    </select>
+
+    <select id="getObjects" parameterType="cn.caojiantao.system.query.DictionaryQuery" resultMap="baseMap">
+        SELECT
+        `id`,
+        `parent_id`,
+        `code`,
+        `name`,
+        `value`,
+        `description`,
+        `order`,
+        `gmt_create`,
+        `gmt_modified`
+        FROM dictionary
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="code!=null and code!=''">AND `code` = #{code}</if>
+            <if test="name!=null and name!=''">AND `name` LIKE CONCAT('%',#{name},'%')</if>
+        </trim>
+        ORDER BY `order`
+        <if test="start!=null and pagesize!=null">
+            LIMIT #{start}, #{pagesize}
+        </if>
+    </select>
+
+    <select id="countObjects" parameterType="cn.caojiantao.system.query.DictionaryQuery" resultType="int">
+        SELECT COUNT(*) FROM dictionary
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="code!=null and code!=''">AND `code` = #{code}</if>
+            <if test="name!=null and name!=''">AND `name` LIKE CONCAT('%',#{name},'%')</if>
+        </trim>
+    </select>
+
+
+    <select id="getDictionaryDTOById" parameterType="int" resultType="cn.caojiantao.system.dto.DictionaryDTO">
+        SELECT t1.`id`,
+               t1.`parent_id`    AS 'parentId',
+               t1.`code`,
+               t1.`name`,
+               t1.`value`,
+               t1.`description`,
+               t1.`order`,
+               t1.`gmt_create`   AS 'gmtCreate',
+               t1.`gmt_modified` AS 'gmtModified',
+               t2.`name`         AS 'parentName'
+        FROM dictionary AS t1
+                 LEFT JOIN dictionary AS t2 ON t1.parent_id = t2.id
+        WHERE t1.id = #{id}
+    </select>
+</mapper>

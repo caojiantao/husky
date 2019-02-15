@@ -29,7 +29,7 @@ export default {
   methods: {
     submitForm: function() {
       this.$axios
-        .post("/system/user/login", this.loginModel)
+        .post("/system/security/user/login", this.loginModel)
         .then(data => {
           let token = data.token;
           let user = data.user;

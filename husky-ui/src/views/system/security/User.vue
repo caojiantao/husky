@@ -14,7 +14,7 @@
 
     <Pagination
       ref="husky-pagination"
-      url="/system/user/getUserByPage"
+      url="/system/security/user/getUserByPage"
       :query="query"
       :columns="columns"
     >
@@ -113,7 +113,7 @@ export default {
     editRow: function(row) {
       // 首先获取角色基本信息
       this.$axios
-        .get("/system/user/getUserWithRolesById?id=" + row.id)
+        .get("/system/security/user/getUserWithRolesById?id=" + row.id)
         .then(user => {
           let roleIds = [];
           // 初始化选中的角色
@@ -139,7 +139,7 @@ export default {
       })
         .then(() => {
           this.$axios
-            .post("/system/user/deleteUserById", {
+            .post("/system/security/user/deleteUserById", {
               id: row.id
             })
             .then(() => {
@@ -158,7 +158,7 @@ export default {
             user.roleDTOS.push({ id: roleId })
           );
           this.$axios
-            .post("/system/user/saveUser", user)
+            .post("/system/security/user/saveUser", user)
             .then(() => {
               this.dialogModel.visible = false;
               this.search();
@@ -171,7 +171,7 @@ export default {
     },
     getAllRoles() {
       this.$axios
-        .get("/system/role/getAllRoles")
+        .get("/system/security/role/getAllRoles")
         .then(roles => {
           this.roles = roles;
         })

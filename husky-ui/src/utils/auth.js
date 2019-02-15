@@ -4,10 +4,14 @@ const saveToken = (token) => {
     window.localStorage.setItem('token', token)
 }
 
+const clearToken = () => {
+    window.localStorage.removeItem('token')
+}
+
 const initMenusAndRoutes = (userId, store, _axios, router) => {
     // 获取当前用户的菜单信息
     _axios
-        .get("/system/menu/getMenusByUserId", {
+        .get("/system/security/menu/getMenusByUserId", {
             params: {
                 userId: userId
             }
@@ -61,6 +65,7 @@ const getBreadcrumbDatas = (menuId, menus) => {
 export {
     getToken,
     saveToken,
+    clearToken,
     initMenusAndRoutes,
     getBreadcrumbDatas
 }

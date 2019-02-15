@@ -1,19 +1,17 @@
 package cn.caojiantao.system.model.dictionary;
 
-
 import cn.caojiantao.common.base.BaseModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-/**
- * @author caojiantao
- */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class DictSet extends BaseModel{
+public class Dictionary extends BaseModel {
 
-    private Integer parentValueId;
+    private Integer parentId;
     private String code;
     private String name;
-    private String desc;
+    private String value;
+    private String description;
+    private Integer order;
 }

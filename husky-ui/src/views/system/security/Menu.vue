@@ -92,7 +92,7 @@ export default {
     },
     getMenus() {
       this.$axios
-        .get("/system/menu/getAllMenus")
+        .get("/system/security/menu/getAllMenus")
         .then(menus => {
           this.menus = menus;
         })
@@ -103,7 +103,7 @@ export default {
       this.$refs["menu"].validate(valid => {
         if (valid) {
           this.$axios
-            .post("/system/menu/saveMenu", this.dialogModel.form)
+            .post("/system/security/menu/saveMenu", this.dialogModel.form)
             .then(() => {
               this.dialogModel.visible = false;
               this.getMenus();
@@ -143,7 +143,7 @@ export default {
             on: {
               click: () => {
                 this.$axios
-                  .get("/system/menu/getMenuById", {
+                  .get("/system/security/menu/getMenuById", {
                     params: {
                       id: data.id
                     }
@@ -196,7 +196,7 @@ export default {
     // 删除菜单
     removeMenu(id) {
       this.$axios
-        .post("/system/menu/deleteMenuById", {
+        .post("/system/security/menu/deleteMenuById", {
           id: id
         })
         .then(() => {
