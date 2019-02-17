@@ -24,7 +24,7 @@
             `error_msg`,
             `gmt_create`,
             `gmt_modified`
-        FROM quartz_log
+        FROM system_quartz_log
         WHERE id = #{id}
     </select>
 
@@ -38,7 +38,7 @@
         `error_msg`,
         `gmt_create`,
         `gmt_modified`
-        FROM quartz_log
+        FROM system_quartz_log
         <if test="start!=null and offset!=null">
             LIMIT #{start}, #{offset}
         </if>
@@ -46,16 +46,16 @@
 
     <select id="countObjects" resultType="int">
         SELECT COUNT(*)
-        FROM quartz_log
+        FROM system_quartz_log
     </select>
 
     <insert id="save" parameterType="cn.caojiantao.system.model.quartz.QuartzLog" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO quartz_log (`quartz_id`, `status`, `start_time`, `gmt_create`)
+        INSERT INTO system_quartz_log (`quartz_id`, `status`, `start_time`, `gmt_create`)
         VALUES (#{quartzId}, #{status}, #{startTime}, #{gmtCreate})
     </insert>
 
     <update id="updateById" parameterType="cn.caojiantao.system.model.quartz.QuartzLog">
-        UPDATE quartz_log
+        UPDATE system_quartz_log
         <trim prefix="SET" suffix="WHERE id = #{id}" suffixOverrides=",">
             `status` = #{status},
             `end_time` = #{endTime},
@@ -65,7 +65,7 @@
     </update>
 
     <delete id="deleteById" parameterType="int">
-        DELETE FROM quartz_log
+        DELETE FROM system_quartz_log
         WHERE id = #{id}
     </delete>
 </mapper>

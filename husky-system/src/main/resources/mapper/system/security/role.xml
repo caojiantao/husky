@@ -12,17 +12,17 @@
 
     <insert id="insert" parameterType="cn.caojiantao.system.model.security.Menu" useGeneratedKeys="true"
             keyProperty="id">
-        INSERT INTO role (`name`, `gmt_create`)
+        INSERT INTO system_role (`name`, `gmt_create`)
         VALUES (#{name}, #{gmtCreate})
     </insert>
 
     <delete id="deleteById" parameterType="int">
-        DELETE FROM role
+        DELETE FROM system_role
         WHERE id = #{id}
     </delete>
 
     <update id="updateById" parameterType="cn.caojiantao.system.model.security.Role">
-        UPDATE role
+        UPDATE system_role
         <trim prefix="SET" suffix="WHERE id = #{id}">
             `name` = #{name},
             `gmt_modified` = #{gmtModified}
@@ -36,7 +36,7 @@
         `gmt_create`,
         `gmt_modified`
         FROM
-        role
+        system_role
         <trim prefix="WHERE" prefixOverrides="AND">
             <if test="name!=null and name!=''">AND `name` like CONCAT('%',#{name},'%')</if>
         </trim>
@@ -45,7 +45,7 @@
 
     <select id="countObjects" resultType="int" parameterType="cn.caojiantao.system.query.RoleQuery">
         SELECT COUNT(*)
-        FROM role
+        FROM system_role
         <trim prefix="WHERE" prefixOverrides="AND">
             <if test="name!=null and name!=''">AND `name` like CONCAT('%',#{name},'%')</if>
         </trim>
@@ -58,7 +58,7 @@
             `gmt_create`,
             `gmt_modified`
         FROM
-            role
+            system_role
         WHERE id = #{id}
     </select>
 </mapper>

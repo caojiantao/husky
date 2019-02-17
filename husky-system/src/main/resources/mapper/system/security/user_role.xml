@@ -4,20 +4,20 @@
 <mapper namespace="cn.caojiantao.system.mapper.security.UserRoleMapper">
 
     <insert id="addUserRoles">
-        INSERT INTO user_role (user_id, role_id) VALUES
+        INSERT INTO system_user_role (user_id, role_id) VALUES
         <foreach collection="list" item="userRole" separator=",">
             (#{userRole.userId}, #{userRole.roleId})
         </foreach>
     </insert>
 
     <delete id="deleteByUserId" parameterType="int">
-        DELETE FROM user_role
+        DELETE FROM system_user_role
         WHERE user_id = #{userId}
     </delete>
 
     <select id="getRoleIdsByUserId" parameterType="int" resultType="int">
         SELECT role_id
-        FROM user_role
+        FROM system_user_role
         WHERE user_id = #{userId}
     </select>
 </mapper>

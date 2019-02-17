@@ -19,7 +19,7 @@
             `nickname`,
             `gmt_create`,
             `gmt_modified`
-        FROM user
+        FROM system_user
         WHERE id = #{id}
     </select>
 
@@ -30,7 +30,7 @@
         `nickname`,
         `gmt_create`,
         `gmt_modified`
-        FROM user
+        FROM system_user
         <trim prefix="WHERE" prefixOverrides="AND">
             <if test="id!=null">AND `id` = #{id}</if>
             <if test="username!=null and username!=''">AND `username` LIKE CONCAT('%',#{username},'%')</if>
@@ -41,7 +41,7 @@
 
     <select id="countObjects" resultType="int" parameterType="cn.caojiantao.system.query.UserQuery">
         SELECT COUNT(*)
-        FROM user
+        FROM system_user
         <trim prefix="WHERE" prefixOverrides="AND">
             <if test="id!=null">AND `id` = #{id}</if>
             <if test="username!=null and username!=''">AND `username` LIKE CONCAT('%',#{username},'%')</if>
@@ -52,17 +52,17 @@
     <!-- 想要获取最后一次插入的主键id，注意mybatis和ibatis的区别 -->
     <insert id="insert" parameterType="cn.caojiantao.system.model.security.User" useGeneratedKeys="true"
             keyProperty="id">
-        INSERT INTO user (`username`, `password`, `nickname`, `gmt_create`)
+        INSERT INTO system_user (`username`, `password`, `nickname`, `gmt_create`)
         VALUES (#{username}, #{password}, #{nickname}, #{gmtCreate})
     </insert>
 
     <delete id="deleteById" parameterType="int">
-        DELETE FROM user
+        DELETE FROM system_user
         WHERE id = #{id}
     </delete>
 
     <update id="updateById" parameterType="cn.caojiantao.system.model.security.User">
-        UPDATE user
+        UPDATE system_user
         <trim prefix="SET" suffix="WHERE id = #{id}" suffixOverrides=",">
             `gmt_modified` = #{gmtModified},
             <if test="username!=null and username!=''">`username` = #{username},</if>
@@ -76,7 +76,7 @@
             `id`,
             `username`,
             `nickname`
-        FROM user
+        FROM system_user
         WHERE
             `username` = #{username}
             AND `password` = #{password}

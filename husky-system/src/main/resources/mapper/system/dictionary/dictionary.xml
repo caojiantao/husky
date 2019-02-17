@@ -17,18 +17,18 @@
 
     <insert id="insert" parameterType="cn.caojiantao.system.model.dictionary.Dictionary" keyProperty="id"
             useGeneratedKeys="true">
-        INSERT INTO dictionary (parent_id, code, `name`, `value`, description, `order`, `gmt_create`)
+        INSERT INTO system_dictionary (parent_id, code, `name`, `value`, description, `order`, `gmt_create`)
         VALUES (#{parentId}, #{code}, #{name}, #{value}, #{description}, #{order}, #{gmtCreate})
     </insert>
 
     <delete id="deleteById" parameterType="int">
         DELETE
-        FROM dictionary
+        FROM system_dictionary
         WHERE id = #{id}
     </delete>
 
     <update id="updateById" parameterType="cn.caojiantao.system.model.dictionary.Dictionary">
-        UPDATE dictionary
+        UPDATE system_dictionary
         <trim prefix="SET" suffix="WHERE id = #{id}" suffixOverrides=",">
             `gmt_modified` = #{gmtModified},
             <if test='parentId!=null'>`parent_id` = #{parentId},</if>
@@ -49,7 +49,7 @@
                `order`,
                `gmt_create`,
                `gmt_modified`
-        FROM dictionary
+        FROM system_dictionary
         WHERE id = #{id}
     </select>
 
@@ -64,7 +64,7 @@
         `order`,
         `gmt_create`,
         `gmt_modified`
-        FROM dictionary
+        FROM system_dictionary
         <trim prefix="WHERE" prefixOverrides="AND">
             <if test="code!=null and code!=''">AND `code` = #{code}</if>
             <if test="name!=null and name!=''">AND `name` LIKE CONCAT('%',#{name},'%')</if>
@@ -76,7 +76,7 @@
     </select>
 
     <select id="countObjects" parameterType="cn.caojiantao.system.query.DictionaryQuery" resultType="int">
-        SELECT COUNT(*) FROM dictionary
+        SELECT COUNT(*) FROM system_dictionary
         <trim prefix="WHERE" prefixOverrides="AND">
             <if test="code!=null and code!=''">AND `code` = #{code}</if>
             <if test="name!=null and name!=''">AND `name` LIKE CONCAT('%',#{name},'%')</if>
@@ -95,8 +95,8 @@
                t1.`gmt_create`   AS 'gmtCreate',
                t1.`gmt_modified` AS 'gmtModified',
                t2.`name`         AS 'parentName'
-        FROM dictionary AS t1
-                 LEFT JOIN dictionary AS t2 ON t1.parent_id = t2.id
+        FROM system_dictionary AS t1
+                 LEFT JOIN system_dictionary AS t2 ON t1.parent_id = t2.id
         WHERE t1.id = #{id}
     </select>
 </mapper>

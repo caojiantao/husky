@@ -34,8 +34,7 @@
       <el-form
         ref="dictionary"
         :model="dialogModel.form" 
-        label-width="80px"
-        :rules="rules">
+        label-width="80px">
         <el-form-item label="父级" prop="parentId">
           <el-select 
             v-model="dialogModel.form.parentId" 
@@ -95,12 +94,8 @@ export default {
         { label: "操作", slotName: "operate" }
       ],
       dialogModel: this.getInitDialogModel(),
-      options: this.getInitOptions(),
-      rules: {
-        'parentId': [
-          { required: true, message: '请选择父级节点', trigger: 'change' }
-        ]
-      },
+      // 下拉框远程字典
+      options: [],
       optionsLoading: false
     };
   },
@@ -119,11 +114,6 @@ export default {
         form: {}
       };
     },
-    getInitOptions: function() {
-      return [
-        {value: 0, label: '无'}
-      ]
-    },
     addRow: function() {
       this.dialogModel = {
         title: "新增字典",
@@ -135,19 +125,22 @@ export default {
       this.$axios
         .get("/system/dictionary/getDictionaryById?id=" + row.id)
         .then(dictionary => {
+          if(dictionary.parentId) {
+            // 存在父级节点增加对应OPTION
+            this.options.push({
+              value: dictionary.parentId,
+              label: dictionary.parentName
+            })
+          } else {
+            // 否则赋值null，重置下拉框
+            dictionary.parentId = null;
+          }
           // 展示对话框
           this.dialogModel = {
             title: "编辑字典",
             visible: true,
             form: dictionary
           };
-          // 增加对应OPTION
-          if(dictionary.parentId) {
-            this.options.push({
-              value: dictionary.parentId,
-              label: dictionary.parentName
-            })
-          }
         });
     },
     removeRow(row) {
@@ -172,6 +165,10 @@ export default {
       this.$refs["dictionary"].validate(valid => {
         if (valid) {
           let dictionary = this.dialogModel.form;
+          if (!dictionary.parentId) {
+            // 父级节点未选中默认值0
+            dictionary.parentId = 0;
+          }
           this.$axios
             .post("/system/dictionary/saveDictionary", dictionary)
             .then(() => {
@@ -184,16 +181,9 @@ export default {
         }
       });
     },
-    getAllRoles() {
-      this.$axios
-        .get("/system/security/role/getAllRoles")
-        .then(roles => {
-          this.roles = roles;
-        })
-        .catch(() => {});
-    },
+    // 下拉框远程加载数据字典列表
     remoteMethod(keyword) {
-      this.options = this.getInitOptions();
+      this.options = [];
       if(keyword) {
         this.optionsLoading = true;
         this.$axios
@@ -211,8 +201,9 @@ export default {
           });
       }
     },
+    // 对话框完全关闭事件
     dialogClosed() {
-      this.options = this.getInitOptions();
+      this.options = [];
       this.dialogModel.form = {};
       this.$refs['dictionary'].resetFields();
     }

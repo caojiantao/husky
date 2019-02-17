@@ -26,18 +26,18 @@
             `component_path`,
             `gmt_create`,
             `gmt_modified`
-        FROM menu
+        FROM system_menu
         WHERE id = #{id}
     </select>
 
     <insert id="insert" parameterType="cn.caojiantao.system.model.security.Menu" useGeneratedKeys="true"
             keyProperty="id">
-        INSERT INTO menu (`name`, `parent_id`, `href`, `icon_class`, `component_path`, `order`, `gmt_create`)
+        INSERT INTO system_menu (`name`, `parent_id`, `href`, `icon_class`, `component_path`, `order`, `gmt_create`)
         VALUES (#{name}, #{parentId}, #{href}, #{iconClass}, #{componentPath}, #{order}, #{gmtCreate})
     </insert>
 
     <update id="updateById" parameterType="cn.caojiantao.system.model.security.Menu">
-        UPDATE menu
+        UPDATE system_menu
         <trim prefix="SET" suffix="WHERE id = #{id}">
             `name` = #{name},
             `parent_id` = #{parentId},
@@ -50,7 +50,7 @@
     </update>
 
     <delete id="deleteById" parameterType="int">
-        DELETE FROM menu
+        DELETE FROM system_menu
         WHERE `id` = #{id}
     </delete>
 
@@ -58,13 +58,13 @@
         SELECT
             t1.*
         FROM
-            menu AS t1,
+            system_menu AS t1,
             (
                 SELECT
                     t1.menu_id
                 FROM
-                    role_menu AS t1,
-                    ( SELECT role_id FROM user_role WHERE user_id = #{userId} ) AS t2
+                    system_role_menu AS t1,
+                    ( SELECT role_id FROM system_user_role WHERE user_id = #{userId} ) AS t2
                 WHERE
                     t1.role_id = t2.role_id
             ) AS t2
@@ -74,15 +74,15 @@
     </select>
 
     <select id="getAllMenus" resultMap="baseMap">
-        SELECT * FROM menu ORDER BY `order`
+        SELECT * FROM system_menu ORDER BY `order`
     </select>
 
     <select id="getMenusByRoleId" resultMap="baseMap" parameterType="int">
         SELECT
             t1.*
         FROM
-            menu AS t1,
-            ( SELECT t1.menu_id FROM role_menu AS t1 WHERE t1.role_id = #{roleId} ) AS t2
+            system_menu AS t1,
+            ( SELECT t1.menu_id FROM system_role_menu AS t1 WHERE t1.role_id = #{roleId} ) AS t2
         WHERE
             t1.id = t2.menu_id
         ORDER BY
