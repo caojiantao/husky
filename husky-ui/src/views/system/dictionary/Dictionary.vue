@@ -164,7 +164,8 @@ export default {
     submitForm() {
       this.$refs["dictionary"].validate(valid => {
         if (valid) {
-          let dictionary = this.dialogModel.form;
+          // 深拷贝，避免改变表单页面数据
+          let dictionary = JSON.parse(JSON.stringify(this.dialogModel.form));
           if (!dictionary.parentId) {
             // 父级节点未选中默认值0
             dictionary.parentId = 0;
@@ -204,7 +205,6 @@ export default {
     // 对话框完全关闭事件
     dialogClosed() {
       this.options = [];
-      this.dialogModel.form = {};
       this.$refs['dictionary'].resetFields();
     }
   }
