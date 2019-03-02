@@ -5,6 +5,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
+/**
+ * @author caojiantao
+ */
 @SpringBootApplication(scanBasePackages = "cn.caojiantao")
 @MapperScan("cn.caojiantao.**.mapper")
 public class StarterApplication {

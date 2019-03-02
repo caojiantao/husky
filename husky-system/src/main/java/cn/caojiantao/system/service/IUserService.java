@@ -6,6 +6,9 @@ import cn.caojiantao.system.query.UserQuery;
 
 import java.util.List;
 
+/**
+ * @author caojiantao
+ */
 public interface IUserService {
 
     User login(String username, String password);

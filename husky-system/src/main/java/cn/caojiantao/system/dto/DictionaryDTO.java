@@ -4,6 +4,9 @@ import cn.caojiantao.system.model.dictionary.Dictionary;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * @author caojiantao
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class DictionaryDTO extends Dictionary {

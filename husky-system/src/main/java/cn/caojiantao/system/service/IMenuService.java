@@ -4,6 +4,9 @@ import cn.caojiantao.system.model.security.Menu;
 
 import java.util.List;
 
+/**
+ * @author caojiantao
+ */
 public interface IMenuService {
 
     List<Menu> getMenusByUserId(int userId);

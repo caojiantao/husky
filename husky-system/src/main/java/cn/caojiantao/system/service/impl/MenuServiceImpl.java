@@ -11,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * @author caojiantao
+ */
 @Service
 public class MenuServiceImpl implements IMenuService {
 
@@ -46,7 +49,7 @@ public class MenuServiceImpl implements IMenuService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public boolean deleteMenuById(int id) {
         roleMenuMapper.deleteByMenuId(id);
         return menuMapper.deleteById(id) > 0;

@@ -29,6 +29,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author caojiantao
+ */
 @Slf4j
 @Service
 public class UserServiceImpl implements IUserService {
@@ -103,7 +106,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public boolean addUser(UserDTO userDTO) {
         userDTO.setPassword(encryptPassword(userDTO.getPassword()));
         User user = new User();
@@ -115,7 +118,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public boolean updateUser(UserDTO userDTO) {
         userDTO.setPassword(encryptPassword(userDTO.getPassword()));
         User user = new User();
@@ -126,7 +129,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public boolean deleteUserById(int id) {
         userRoleMapper.deleteByUserId(id);
         return userMapper.deleteById(id) > 0;

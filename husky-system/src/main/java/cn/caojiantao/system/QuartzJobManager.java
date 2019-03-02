@@ -6,6 +6,9 @@ import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author caojiantao
+ */
 @Slf4j
 @Component
 public class QuartzJobManager {
@@ -63,30 +66,30 @@ public class QuartzJobManager {
     /**
      * 暂停定时任务
      */
-    public void pauseJob(Quartz Quartz) {
+    public void pauseJob(Quartz quartz) {
         try {
-            scheduler.pauseTrigger(TriggerKey.triggerKey(Quartz.getName(), Quartz.getGroup()));
+            scheduler.pauseTrigger(TriggerKey.triggerKey(quartz.getName(), quartz.getGroup()));
         } catch (SchedulerException e) {
-            log.error(Quartz.getJobClass() + "暂停报错：", e);
+            log.error(quartz.getJobClass() + "暂停报错：", e);
         }
     }
 
     /**
      * 继续定时任务
      */
-    public void resumeJob(Quartz Quartz) {
+    public void resumeJob(Quartz quartz) {
         try {
-            scheduler.resumeTrigger(TriggerKey.triggerKey(Quartz.getName(), Quartz.getGroup()));
+            scheduler.resumeTrigger(TriggerKey.triggerKey(quartz.getName(), quartz.getGroup()));
         } catch (SchedulerException e) {
-            log.error(Quartz.getJobClass() + "继续报错：", e);
+            log.error(quartz.getJobClass() + "继续报错：", e);
         }
     }
 
     /**
      * 移除定时任务
      */
-    public void removeQuartz(Quartz Quartz) {
-        removeQuartz(TriggerKey.triggerKey(Quartz.getName(), Quartz.getGroup()));
+    public void removeQuartz(Quartz quartz) {
+        removeQuartz(TriggerKey.triggerKey(quartz.getName(), quartz.getGroup()));
     }
 
     public void removeQuartz(TriggerKey key) {
@@ -101,12 +104,12 @@ public class QuartzJobManager {
     /**
      * 手动执行定时任务
      */
-    public boolean executeJob(Quartz Quartz) {
+    public boolean executeJob(Quartz quartz) {
         try {
-            scheduler.triggerJob(new JobKey(Quartz.getName(), Quartz.getGroup()));
+            scheduler.triggerJob(new JobKey(quartz.getName(), quartz.getGroup()));
             return true;
         } catch (SchedulerException e) {
-            log.error(Quartz.getJobClass() + "手动执行报错：", e);
+            log.error(quartz.getJobClass() + "手动执行报错：", e);
             return false;
         }
     }

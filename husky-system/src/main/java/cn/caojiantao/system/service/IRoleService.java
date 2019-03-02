@@ -6,6 +6,9 @@ import cn.caojiantao.system.query.RoleQuery;
 
 import java.util.List;
 
+/**
+ * @author caojiantao
+ */
 public interface IRoleService {
 
     List<Role> getRoles(RoleQuery query);

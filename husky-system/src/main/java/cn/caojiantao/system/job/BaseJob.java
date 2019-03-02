@@ -33,22 +33,22 @@ public abstract class BaseJob implements Job {
     @Override
     public void execute(JobExecutionContext context) {
         int id = context.getJobDetail().getJobDataMap().getIntValue("id");
-        Quartz Quartz = quartzService.getQuartzById(id);
-        if (Quartz == null) {
+        Quartz quartz = quartzService.getQuartzById(id);
+        if (quartz == null) {
             log.error(context.getJobDetail().getJobClass() + "已被直接删除");
             manager.removeQuartz(context.getTrigger().getKey());
         } else {
             try {
-                if ((new CronExpression(Quartz.getCronExpression())).isSatisfiedBy(new Date())) {
+                if ((new CronExpression(quartz.getCronExpression())).isSatisfiedBy(new Date())) {
                     // 表达式与当前匹配
                     executeUniqueQuartz(context);
                 } else {
-                    log.error("表达式[" + Quartz.getCronExpression() + "]与当前时间不匹配");
+                    log.error("表达式[" + quartz.getCronExpression() + "]与当前时间不匹配");
                     manager.removeQuartz(context.getTrigger().getKey());
-                    manager.addJob(Quartz);
+                    manager.addJob(quartz);
                 }
             } catch (ParseException e) {
-                log.error("表达式[" + Quartz.getCronExpression() + "]解析错误");
+                log.error("表达式[" + quartz.getCronExpression() + "]解析错误");
                 manager.removeQuartz(context.getTrigger().getKey());
             }
         }

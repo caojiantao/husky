@@ -6,6 +6,9 @@ import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
+/**
+ * @author caojiantao
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class UserDTO extends User {

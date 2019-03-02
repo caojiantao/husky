@@ -7,6 +7,9 @@ import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
+/**
+ * @author caojiantao
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class RoleDTO extends Role {

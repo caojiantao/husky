@@ -31,7 +31,7 @@ public class RedisConfig implements Serializable {
     @Bean
     @SuppressWarnings("unchecked")
     RedisCacheManager cacheManager(RedisConnectionFactory factory) {
-        Map<String, RedisCacheConfiguration> configurationMap = new HashMap<>();
+        Map<String, RedisCacheConfiguration> configurationMap = new HashMap<>(10);
         if (!CollectionUtils.isEmpty(serializerConfig)) {
             RedisCacheConfiguration configuration = RedisCacheConfiguration.defaultCacheConfig();
             ProtoStuffSerializer serializer;

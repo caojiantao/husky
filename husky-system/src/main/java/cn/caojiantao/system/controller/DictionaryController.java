@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * @author caojiantao
+ */
 @RestController
 @RequestMapping("/system/dictionary")
 public class DictionaryController {

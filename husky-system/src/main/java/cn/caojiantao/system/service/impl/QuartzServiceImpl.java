@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * @author caojiantao
+ */
 @Service
 @Slf4j
 public class QuartzServiceImpl implements IQuartzService, InitializingBean {

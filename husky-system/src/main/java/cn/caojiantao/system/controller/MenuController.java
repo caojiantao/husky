@@ -6,6 +6,9 @@ import com.github.caojiantao.dto.ResultDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * @author caojiantao
+ */
 @RestController
 @RequestMapping("/system/security/menu")
 public class MenuController {

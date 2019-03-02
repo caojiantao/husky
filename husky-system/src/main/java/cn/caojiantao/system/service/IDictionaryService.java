@@ -6,6 +6,9 @@ import cn.caojiantao.system.query.DictionaryQuery;
 
 import java.util.List;
 
+/**
+ * @author caojiantao
+ */
 public interface IDictionaryService {
 
     DictionaryDTO getDictionaryById(int id);
