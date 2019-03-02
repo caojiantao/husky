@@ -38,12 +38,12 @@ public class RoleServiceImpl implements IRoleService {
 
     @Override
     public List<Role> getRoles(RoleQuery query) {
-        return roleMapper.getObjects(query);
+        return roleMapper.getList(query);
     }
 
     @Override
     public int countRoles(RoleQuery query) {
-        return roleMapper.countObjects(query);
+        return roleMapper.countList(query);
     }
 
     @Override

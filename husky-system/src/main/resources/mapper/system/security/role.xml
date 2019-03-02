@@ -29,7 +29,7 @@
         </trim>
     </update>
 
-    <select id="getObjects" resultMap="baseMap" parameterType="cn.caojiantao.system.query.RoleQuery">
+    <select id="getList" resultMap="baseMap" parameterType="cn.caojiantao.system.query.RoleQuery">
         SELECT
         `id`,
         `name`,
@@ -43,7 +43,7 @@
         <if test="pagesize!=null and pagesize!=0">LIMIT #{start}, #{pagesize}</if>
     </select>
 
-    <select id="countObjects" resultType="int" parameterType="cn.caojiantao.system.query.RoleQuery">
+    <select id="countList" resultType="int" parameterType="cn.caojiantao.system.query.RoleQuery">
         SELECT COUNT(*)
         FROM system_role
         <trim prefix="WHERE" prefixOverrides="AND">

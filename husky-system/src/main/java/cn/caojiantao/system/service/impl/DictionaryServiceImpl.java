@@ -31,12 +31,12 @@ public class DictionaryServiceImpl implements IDictionaryService {
 
     @Override
     public List<Dictionary> getDictionaries(DictionaryQuery query) {
-        return dictionaryMapper.getObjects(query);
+        return dictionaryMapper.getList(query);
     }
 
     @Override
     public int countDictionaries(DictionaryQuery query) {
-        return dictionaryMapper.countObjects(query);
+        return dictionaryMapper.countList(query);
     }
 
     @Override

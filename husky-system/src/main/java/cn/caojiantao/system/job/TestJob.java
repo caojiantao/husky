@@ -9,5 +9,10 @@ public class TestJob extends BaseJob {
     public void doExecute() {
         System.out.println("=============== start ===============");
         System.out.println(Thread.currentThread().getName() + "is running...");
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

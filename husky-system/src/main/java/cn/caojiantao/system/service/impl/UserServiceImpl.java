@@ -97,12 +97,12 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public List<User> getUsers(UserQuery query) {
-        return userMapper.getObjects(query);
+        return userMapper.getList(query);
     }
 
     @Override
     public int countUsers(UserQuery query) {
-        return userMapper.countObjects(query);
+        return userMapper.countList(query);
     }
 
     @Override

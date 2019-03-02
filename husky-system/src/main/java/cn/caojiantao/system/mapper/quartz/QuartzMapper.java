@@ -9,4 +9,5 @@ import cn.caojiantao.common.base.BaseMapper;
  */
 public interface QuartzMapper extends BaseMapper<Quartz, QuartzQuery> {
 
+    int updateStatusById(Quartz quartz);
 }

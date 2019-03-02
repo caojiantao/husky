@@ -75,7 +75,7 @@
         </if>
     </select>
 
-    <select id="countObjects" parameterType="cn.caojiantao.system.query.DictionaryQuery" resultType="int">
+    <select id="countList" parameterType="cn.caojiantao.system.query.DictionaryQuery" resultType="int">
         SELECT COUNT(*) FROM system_dictionary
         <trim prefix="WHERE" prefixOverrides="AND">
             <if test="code!=null and code!=''">AND `code` = #{code}</if>

@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 public class QuartzLog extends BaseModel {
 
     private Integer quartzId;
-    private Integer status;
+    private Boolean status;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private String errorMsg;
+    private String exceptionMessage;
 }

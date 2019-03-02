@@ -9,45 +9,53 @@
         <result column="group" property="group"/>
         <result column="cron_expression" property="cronExpression"/>
         <result column="job_class" property="jobClass"/>
+        <result column="description" property="description"/>
+        <result column="status" property="status"/>
         <result column="gmt_create" property="gmtCreate"/>
         <result column="gmt_modified" property="gmtModified"/>
     </resultMap>
 
     <select id="getById" resultMap="baseMap">
-        SELECT
-            `id`,
-            `name`,
-            `group`,
-            `cron_expression`,
-            `job_class`,
-            `gmt_create`,
-            `gmt_modified`
+        SELECT `id`,
+               `name`,
+               `group`,
+               `cron_expression`,
+               `job_class`,
+               `description`,
+               `status`,
+               `gmt_create`,
+               `gmt_modified`
         FROM system_quartz
         WHERE id = #{id}
     </select>
 
-    <select id="getObjects" resultMap="baseMap">
+    <select id="getList" resultMap="baseMap">
         SELECT
         `id`,
         `name`,
         `group`,
         `cron_expression`,
         `job_class`,
+        `description`,
         `status`,
         `gmt_create`,
         `gmt_modified`
         FROM system_quartz
-        <if test="pagesize!=null and pagesize!=0">LIMIT #{start}, #{pagesize}</if>
+        <if test="pagesize!=null and pagesize!=0">
+            LIMIT #{start}, #{pagesize}
+        </if>
     </select>
 
-    <select id="countObjects" resultType="int">
+    <select id="countList" resultType="int">
         SELECT COUNT(*)
         FROM system_quartz
     </select>
 
-    <insert id="save" parameterType="cn.caojiantao.system.model.quartz.Quartz" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO system_quartz (`name`, `group`, `cron_expre`, `status`, `desc`, `job_class`, `gmt_create`)
-        VALUES (#{name}, #{group}, #{cronExpre}, #{status}, #{desc}, #{jobClass}, #{gmtCreate})
+    <insert id="insert" parameterType="cn.caojiantao.system.model.quartz.Quartz" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO system_quartz
+        (`name`, `group`, `cron_expression`, `description`, `status`, `job_class`, `gmt_create`)
+        VALUES (#{name}, #{group}, #{cronExpression}, #{description}, #{status}, #{jobClass}, #{gmtCreate})
     </insert>
 
     <update id="updateById" parameterType="cn.caojiantao.system.model.quartz.Quartz">
@@ -56,15 +64,23 @@
             `gmt_modified` = #{gmtModified},
             <if test='name!=null'>`name` = #{name},</if>
             <if test='group!=null'>`group` = #{group},</if>
-            <if test='status!=null'>`status` = #{status},</if>
-            <if test='cronExpre!=null'>`cron_expre` = #{cronExpre},</if>
-            <if test='desc!=null'>`desc` = #{desc},</if>
+            <if test='cronExpression!=null'>`cron_expression` = #{cronExpression},</if>
+            <if test='description!=null'>`description` = #{description},</if>
             <if test='jobClass!=null'>`job_class` = #{jobClass},</if>
+            <if test='status!=null'>`status` = #{status},</if>
         </trim>
     </update>
 
     <delete id="deleteById" parameterType="int">
-        DELETE FROM system_quartz
+        DELETE
+        FROM system_quartz
         WHERE id = #{id}
     </delete>
+
+    <update id="updateStatusById" parameterType="cn.caojiantao.system.model.quartz.Quartz">
+        UPDATE system_quartz
+        SET status       = #{status},
+            gmt_modified = #{gmtModified}
+        WHERE id = #{id}
+    </update>
 </mapper>

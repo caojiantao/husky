@@ -23,7 +23,7 @@
         WHERE id = #{id}
     </select>
 
-    <select id="getObjects" resultMap="baseMap" parameterType="cn.caojiantao.system.query.UserQuery">
+    <select id="getList" resultMap="baseMap" parameterType="cn.caojiantao.system.query.UserQuery">
         SELECT
         `id`,
         `username`,
@@ -39,7 +39,7 @@
         LIMIT #{start}, #{pagesize}
     </select>
 
-    <select id="countObjects" resultType="int" parameterType="cn.caojiantao.system.query.UserQuery">
+    <select id="countList" resultType="int" parameterType="cn.caojiantao.system.query.UserQuery">
         SELECT COUNT(*)
         FROM system_user
         <trim prefix="WHERE" prefixOverrides="AND">

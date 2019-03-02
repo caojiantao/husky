@@ -1,3 +1,6 @@
 module.exports = {
-  outputDir: 'public'
+  outputDir: 'public',
+  devServer: {
+    port: 9000
+  }
 }

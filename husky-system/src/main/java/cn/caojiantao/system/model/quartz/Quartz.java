@@ -15,8 +15,8 @@ public class Quartz extends BaseModel {
 
     private String group;
     private String name;
-    private Boolean status;
     private String cronExpression;
-    private String desc;
+    private String description;
     private String jobClass;
+    private Boolean status;
 }

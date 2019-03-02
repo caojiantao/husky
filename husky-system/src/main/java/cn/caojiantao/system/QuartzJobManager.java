@@ -33,7 +33,7 @@ public class QuartzJobManager {
                 // 新建一个job，并将ID作为携带数据
                 JobDetail jobDetail = JobBuilder.newJob((Class<? extends Job>) Class.forName(job.getJobClass()))
                         .withIdentity(job.getName(), job.getGroup())
-                        .withDescription(job.getDesc())
+                        .withDescription(job.getDescription())
                         .usingJobData("id", job.getId())
                         .build();
                 // 新建一个trigger
