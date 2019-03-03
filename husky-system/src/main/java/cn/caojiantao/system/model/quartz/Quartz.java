@@ -1,6 +1,8 @@
 package cn.caojiantao.system.model.quartz;
 
 import cn.caojiantao.common.base.BaseModel;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -10,9 +12,11 @@ import lombok.EqualsAndHashCode;
  * @author caojiantao
  */
 @Data
+@TableName("system_quartz")
 @EqualsAndHashCode(callSuper = false)
 public class Quartz extends BaseModel {
 
+    @TableField("`group`")
     private String group;
     private String name;
     private String cronExpression;

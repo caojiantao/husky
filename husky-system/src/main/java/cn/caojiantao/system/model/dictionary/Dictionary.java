@@ -1,6 +1,8 @@
 package cn.caojiantao.system.model.dictionary;
 
 import cn.caojiantao.common.base.BaseModel;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -8,6 +10,7 @@ import lombok.EqualsAndHashCode;
  * @author caojiantao
  */
 @Data
+@TableName("system_dictionary")
 @EqualsAndHashCode(callSuper = false)
 public class Dictionary extends BaseModel {
 
@@ -16,5 +19,6 @@ public class Dictionary extends BaseModel {
     private String name;
     private String value;
     private String description;
+    @TableField("`order`")
     private Integer order;
 }

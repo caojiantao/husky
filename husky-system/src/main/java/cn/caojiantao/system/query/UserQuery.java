@@ -1,6 +1,7 @@
 package cn.caojiantao.system.query;
 
-import com.github.caojiantao.dto.BaseQuery;
+import cn.caojiantao.system.model.security.User;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,7 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class UserQuery extends BaseQuery {
+public class UserQuery extends Page<User> {
 
     private Integer id;
     private String username;

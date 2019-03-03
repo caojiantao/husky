@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-table v-loading="loading" :data="data">
+    <el-table v-loading="loading" :data="records">
       <el-table-column
         v-for="item in columns"
         :key="item.prop"
@@ -35,7 +35,7 @@ export default {
   data() {
     return {
       loading: false,
-      data: [],
+      records: [],
       pagesize: 10,
       pagesizes: [10, 20, 50],
       curPage: 1,
@@ -46,8 +46,8 @@ export default {
     search: function() {
       this.loading = true;
       let queryWrapper = {
-        page: this.curPage,
-        pagesize: this.pagesize
+        current: this.curPage,
+        size: this.pagesize
       };
       if (this.query) {
         Object.assign(queryWrapper, this.query);
@@ -58,7 +58,7 @@ export default {
         })
         .then(result => {
           this.loading = false;
-          this.data = result.list;
+          this.records = result.records;
           this.total = result.total;
         });
     },

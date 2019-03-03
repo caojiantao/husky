@@ -1,6 +1,7 @@
 package cn.caojiantao.system.query;
 
-import com.github.caojiantao.dto.BaseQuery;
+import cn.caojiantao.system.model.security.Role;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class RoleQuery extends BaseQuery {
+public class RoleQuery extends Page<Role> {
 
     private String name;
 }

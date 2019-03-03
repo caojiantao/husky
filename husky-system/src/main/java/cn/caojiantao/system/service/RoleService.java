@@ -1,14 +1,14 @@
-package cn.caojiantao.system.service.impl;
+package cn.caojiantao.system.service;
 
 import cn.caojiantao.system.dto.RoleDTO;
 import cn.caojiantao.system.mapper.security.MenuMapper;
 import cn.caojiantao.system.mapper.security.RoleMapper;
-import cn.caojiantao.system.mapper.security.RoleMenuMapper;
 import cn.caojiantao.system.model.security.Menu;
 import cn.caojiantao.system.model.security.Role;
 import cn.caojiantao.system.model.security.RoleMenu;
-import cn.caojiantao.system.query.RoleQuery;
-import cn.caojiantao.system.service.IRoleService;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,32 +23,21 @@ import java.util.stream.Collectors;
  * @author caojiantao
  */
 @Service
-public class RoleServiceImpl implements IRoleService {
+public class RoleService extends ServiceImpl<RoleMapper, Role> {
 
     private final RoleMapper roleMapper;
     private final MenuMapper menuMapper;
-    private final RoleMenuMapper roleMenuMapper;
+    private final RoleMenuService roleMenuService;
 
     @Autowired
-    public RoleServiceImpl(RoleMapper roleMapper, MenuMapper menuMapper, RoleMenuMapper roleMenuMapper) {
+    public RoleService(RoleMapper roleMapper, MenuMapper menuMapper, RoleMenuService roleMenuService) {
         this.roleMapper = roleMapper;
         this.menuMapper = menuMapper;
-        this.roleMenuMapper = roleMenuMapper;
+        this.roleMenuService = roleMenuService;
     }
 
-    @Override
-    public List<Role> getRoles(RoleQuery query) {
-        return roleMapper.getList(query);
-    }
-
-    @Override
-    public int countRoles(RoleQuery query) {
-        return roleMapper.countList(query);
-    }
-
-    @Override
     public RoleDTO getRoleWithMenusById(int id) {
-        Role role = roleMapper.getById(id);
+        Role role = roleMapper.selectById(id);
         if (role == null) {
             return null;
         } else {
@@ -60,9 +49,8 @@ public class RoleServiceImpl implements IRoleService {
         }
     }
 
-    @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean addRole(RoleDTO roleDTO) {
+    public boolean save(RoleDTO roleDTO) {
         Role role = new Role();
         BeanUtils.copyProperties(roleDTO, role);
         role.setGmtCreate(LocalDateTime.now());
@@ -71,7 +59,6 @@ public class RoleServiceImpl implements IRoleService {
         return role.getId() > 0;
     }
 
-    @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean updateRole(RoleDTO roleDTO) {
         Role role = new Role();
@@ -81,9 +68,12 @@ public class RoleServiceImpl implements IRoleService {
         return roleMapper.updateById(role) > 0;
     }
 
-    @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean deleteRoleById(int id) {
-        roleMenuMapper.deleteByRoleId(id);
+        RoleMenu roleMenu = new RoleMenu();
+        roleMenu.setRoleId(id);
+        Wrapper<RoleMenu> wrapper = Wrappers.query(roleMenu);
+        roleMenuService.remove(wrapper);
         return roleMapper.deleteById(id) > 0;
     }
 
@@ -95,11 +85,14 @@ public class RoleServiceImpl implements IRoleService {
     private void initRoleMenu(RoleDTO roleDTO) {
         Integer roleId = roleDTO.getId();
         if (roleId != null && roleId > 0) {
-            roleMenuMapper.deleteByRoleId(roleId);
+            RoleMenu roleMenu = new RoleMenu();
+            roleMenu.setRoleId(roleId);
+            Wrapper<RoleMenu> wrapper = Wrappers.query(roleMenu);
+            roleMenuService.remove(wrapper);
             List<Menu> menus = roleDTO.getMenus();
             if (!CollectionUtils.isEmpty(menus)) {
                 List<RoleMenu> roleMenus = menus.stream().map(menu -> new RoleMenu(roleId, menu.getId())).collect(Collectors.toList());
-                roleMenuMapper.saveRoleMenus(roleMenus);
+                roleMenuService.saveBatch(roleMenus);
             }
         }
     }

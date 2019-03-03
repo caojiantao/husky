@@ -4,7 +4,8 @@ import cn.caojiantao.common.base.RedisLock;
 import cn.caojiantao.system.QuartzJobManager;
 import cn.caojiantao.system.model.quartz.Quartz;
 import cn.caojiantao.system.model.quartz.QuartzLog;
-import cn.caojiantao.system.service.IQuartzService;
+import cn.caojiantao.system.service.QuartzLogService;
+import cn.caojiantao.system.service.QuartzService;
 import com.github.caojiantao.util.ExceptionUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.CronExpression;
@@ -27,7 +28,9 @@ import java.util.concurrent.TimeUnit;
 public abstract class BaseJob implements Job {
 
     @Autowired
-    private IQuartzService quartzService;
+    private QuartzService quartzService;
+    @Autowired
+    private QuartzLogService quartzLogService;
     @Autowired
     private QuartzJobManager manager;
     @Autowired
@@ -36,7 +39,7 @@ public abstract class BaseJob implements Job {
     @Override
     public void execute(JobExecutionContext context) {
         int id = context.getJobDetail().getJobDataMap().getIntValue("id");
-        Quartz quartz = quartzService.getQuartzById(id);
+        Quartz quartz = quartzService.getById(id);
         if (quartz == null) {
             log.error(context.getJobDetail().getJobClass() + "已被直接删除");
             manager.removeQuartz(context.getTrigger().getKey());
@@ -80,7 +83,7 @@ public abstract class BaseJob implements Job {
                 }
                 LocalDateTime end = LocalDateTime.now();
                 log.setEndTime(end);
-                quartzService.addQuartzLog(log);
+                quartzLogService.save(log);
             } else {
                 log.info(jobClass + "获取执行锁失败");
             }

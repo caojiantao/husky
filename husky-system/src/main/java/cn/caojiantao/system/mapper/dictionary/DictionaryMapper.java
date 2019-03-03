@@ -1,14 +1,13 @@
 package cn.caojiantao.system.mapper.dictionary;
 
-import cn.caojiantao.common.base.BaseMapper;
 import cn.caojiantao.system.dto.DictionaryDTO;
 import cn.caojiantao.system.model.dictionary.Dictionary;
-import cn.caojiantao.system.query.DictionaryQuery;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * @author caojiantao
  */
-public interface DictionaryMapper extends BaseMapper<Dictionary, DictionaryQuery> {
+public interface DictionaryMapper extends BaseMapper<Dictionary> {
 
     DictionaryDTO getDictionaryDTOById(int id);
 }

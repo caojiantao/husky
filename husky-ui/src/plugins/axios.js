@@ -35,11 +35,11 @@ _axios.interceptors.request.use(
 _axios.interceptors.response.use(
   function (response) {
     let responseData = response.data
-    if (responseData.code === 200) {
+    if (responseData.code === 0) {
       return responseData.data
     } else {
       Message({
-        message: responseData.message,
+        message: responseData.msg,
         type: 'error'
       })
       return Promise.reject();

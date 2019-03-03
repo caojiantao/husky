@@ -1,6 +1,7 @@
 package cn.caojiantao.system.query;
 
-import com.github.caojiantao.dto.BaseQuery;
+import cn.caojiantao.system.model.quartz.Quartz;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -10,5 +11,5 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class QuartzQuery extends BaseQuery {
+public class QuartzQuery extends Page<Quartz> {
 }

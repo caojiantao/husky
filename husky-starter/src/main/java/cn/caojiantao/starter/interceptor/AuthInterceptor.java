@@ -2,7 +2,7 @@ package cn.caojiantao.starter.interceptor;
 
 import cn.caojiantao.system.LoginContext;
 import cn.caojiantao.system.model.security.User;
-import cn.caojiantao.system.service.IUserService;
+import cn.caojiantao.system.service.UserService;
 import com.alibaba.fastjson.JSON;
 import com.github.caojiantao.dto.ResultDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +20,10 @@ import java.io.IOException;
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
 
-    private final IUserService userService;
+    private final UserService userService;
 
     @Autowired
-    public AuthInterceptor(IUserService userService) {
+    public AuthInterceptor(UserService userService) {
         this.userService = userService;
     }
 
@@ -37,7 +37,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             response.getWriter().write(JSON.toJSONString(result));
             return false;
         } else {
-            User curUser = userService.getUserByUserId(userId);
+            User curUser = userService.getById(userId);
             LoginContext.setUser(curUser);
             return true;
         }

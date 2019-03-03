@@ -2,11 +2,15 @@ package cn.caojiantao.system.controller;
 
 import cn.caojiantao.system.LoginContext;
 import cn.caojiantao.system.dto.UserDTO;
+import cn.caojiantao.system.model.security.Role;
 import cn.caojiantao.system.model.security.User;
 import cn.caojiantao.system.query.UserQuery;
-import cn.caojiantao.system.service.IUserService;
+import cn.caojiantao.system.service.UserService;
 import com.alibaba.fastjson.JSONObject;
-import com.github.caojiantao.dto.ResultDTO;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.api.ApiController;
+import com.baomidou.mybatisplus.extension.api.R;
 import com.github.caojiantao.util.JSONUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,17 +22,17 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/system/security/user")
-public class UserController {
+public class UserController extends ApiController {
 
-    private final IUserService userService;
+    private final UserService userService;
 
     @Autowired
-    public UserController(IUserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @PostMapping("/login")
-    public ResultDTO login(@RequestBody User user) {
+    public R login(@RequestBody User user) {
         String username = user.getUsername();
         String password = user.getPassword();
         User loginUser = userService.login(username, password);
@@ -36,46 +40,43 @@ public class UserController {
             JSONObject result = new JSONObject();
             result.put("token", userService.generateToken(loginUser.getId()));
             result.put("user", loginUser);
-            return ResultDTO.success(result);
+            return success(result);
         } else {
-            return ResultDTO.failure("用户名或密码错误");
+            return failed("用户名或密码错误");
         }
     }
 
     @GetMapping("/getCurrentUser")
-    public ResultDTO getCurrentUser() {
-        return ResultDTO.success(LoginContext.getUser());
+    public R getCurrentUser() {
+        return success(LoginContext.getUser());
     }
 
     @GetMapping("/getUserByPage")
-    public ResultDTO getUserByPage(UserQuery query) {
-        int total = userService.countUsers(query);
-        List<User> users = null;
-        if (total > 0) {
-            users = userService.getUsers(query);
-        }
-        return ResultDTO.success(JSONUtils.toPageData(users, total));
+    public R getUserByPage(UserQuery query) {
+        QueryWrapper<User> wrapper = Wrappers.query();
+        wrapper.like("username", query.getUsername());
+        return success(userService.page(query, wrapper));
     }
 
     @GetMapping("/getUserWithRolesById")
-    public ResultDTO getUserWithRolesById(int id) {
-        return ResultDTO.success(userService.getUserWithRolesById(id));
+    public R getUserWithRolesById(int id) {
+        return success(userService.getUserWithRolesById(id));
     }
 
     @PostMapping("/saveUser")
-    public ResultDTO saveRole(@RequestBody UserDTO userDTO) {
+    public R saveRole(@RequestBody UserDTO userDTO) {
         Integer id = userDTO.getId();
         boolean operate;
         if ((id == null) || (id == 0)) {
-            operate = userService.addUser(userDTO);
+            operate = userService.save(userDTO);
         } else {
             operate = userService.updateUser(userDTO);
         }
-        return operate ? ResultDTO.success() : ResultDTO.failure("保存用户失败");
+        return operate ? success(null) : failed("保存用户失败");
     }
 
     @PostMapping("/deleteUserById")
-    public ResultDTO deleteUserById(@RequestBody User user) {
-        return userService.deleteUserById(user.getId()) ? ResultDTO.success() : ResultDTO.failure("删除用户失败");
+    public R deleteUserById(@RequestBody User user) {
+        return userService.removeById(user.getId()) ? success(null) : failed("删除用户失败");
     }
 }

@@ -1,6 +1,8 @@
 package cn.caojiantao.system.model.security;
 
 import cn.caojiantao.common.base.BaseModel;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -10,6 +12,7 @@ import lombok.EqualsAndHashCode;
  * @author caojiantao
  */
 @Data
+@TableName("system_menu")
 @EqualsAndHashCode(callSuper = false)
 public class Menu extends BaseModel {
 
@@ -18,5 +21,6 @@ public class Menu extends BaseModel {
     private String href;
     private String iconClass;
     private String componentPath;
+    @TableField("`order`")
     private Integer order;
 }

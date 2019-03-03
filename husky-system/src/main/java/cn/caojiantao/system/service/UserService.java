@@ -1,4 +1,4 @@
-package cn.caojiantao.system.service.impl;
+package cn.caojiantao.system.service;
 
 import cn.caojiantao.system.dto.RoleDTO;
 import cn.caojiantao.system.dto.UserDTO;
@@ -6,13 +6,12 @@ import cn.caojiantao.system.mapper.security.UserMapper;
 import cn.caojiantao.system.mapper.security.UserRoleMapper;
 import cn.caojiantao.system.model.security.User;
 import cn.caojiantao.system.model.security.UserRole;
-import cn.caojiantao.system.query.UserQuery;
-import cn.caojiantao.system.service.IUserService;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -32,9 +31,9 @@ import java.util.stream.Collectors;
 /**
  * @author caojiantao
  */
-@Slf4j
 @Service
-public class UserServiceImpl implements IUserService {
+@Slf4j
+public class UserService extends ServiceImpl<UserMapper, User> {
 
     private final UserMapper userMapper;
     private final UserRoleMapper userRoleMapper;
@@ -43,12 +42,11 @@ public class UserServiceImpl implements IUserService {
     private long expire = 7 * 24 * 60 * 60 * 1000;
 
     @Autowired
-    public UserServiceImpl(UserMapper userMapper, UserRoleMapper userRoleMapper) {
+    public UserService(UserMapper userMapper, UserRoleMapper userRoleMapper) {
         this.userMapper = userMapper;
         this.userRoleMapper = userRoleMapper;
     }
 
-    @Override
     public User login(String username, String password) {
         return userMapper.getUserByUsernameAndPassword(username, encryptPassword(password));
     }
@@ -56,7 +54,6 @@ public class UserServiceImpl implements IUserService {
     /**
      * 生成token（注意注意：key为exp必须为非负数！！！）
      */
-    @Override
     public String generateToken(int userId) {
         String token = "";
         try {
@@ -72,7 +69,6 @@ public class UserServiceImpl implements IUserService {
         return token;
     }
 
-    @Override
     public int parseToken(String token) {
         int userId = 0;
         if (!Strings.isNullOrEmpty(token)) {
@@ -90,24 +86,8 @@ public class UserServiceImpl implements IUserService {
         return userId;
     }
 
-    @Override
-    public User getUserByUserId(int id) {
-        return userMapper.getById(id);
-    }
-
-    @Override
-    public List<User> getUsers(UserQuery query) {
-        return userMapper.getList(query);
-    }
-
-    @Override
-    public int countUsers(UserQuery query) {
-        return userMapper.countList(query);
-    }
-
-    @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean addUser(UserDTO userDTO) {
+    public boolean save(UserDTO userDTO) {
         userDTO.setPassword(encryptPassword(userDTO.getPassword()));
         User user = new User();
         BeanUtils.copyProperties(userDTO, user);
@@ -117,7 +97,6 @@ public class UserServiceImpl implements IUserService {
         return user.getId() > 0;
     }
 
-    @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean updateUser(UserDTO userDTO) {
         userDTO.setPassword(encryptPassword(userDTO.getPassword()));
@@ -128,16 +107,14 @@ public class UserServiceImpl implements IUserService {
         return userMapper.updateById(user) > 0;
     }
 
-    @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean deleteUserById(int id) {
+    public boolean removeById(int id) {
         userRoleMapper.deleteByUserId(id);
         return userMapper.deleteById(id) > 0;
     }
 
-    @Override
     public UserDTO getUserWithRolesById(int id) {
-        User user = userMapper.getById(id);
+        User user = userMapper.selectById(id);
         if (user == null) {
             return null;
         } else {

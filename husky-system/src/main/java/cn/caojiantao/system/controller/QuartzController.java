@@ -3,72 +3,69 @@ package cn.caojiantao.system.controller;
 import cn.caojiantao.system.model.quartz.Quartz;
 import cn.caojiantao.system.model.quartz.QuartzLog;
 import cn.caojiantao.system.query.QuartzQuery;
-import cn.caojiantao.system.service.IQuartzService;
-import com.github.caojiantao.dto.ResultDTO;
-import com.github.caojiantao.util.JSONUtils;
+import cn.caojiantao.system.service.QuartzLogService;
+import cn.caojiantao.system.service.QuartzService;
+import com.baomidou.mybatisplus.extension.api.ApiController;
+import com.baomidou.mybatisplus.extension.api.R;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 /**
  * @author caojiantao
  */
 @RestController
 @RequestMapping("/system/quartz")
-public class QuartzController {
+public class QuartzController extends ApiController {
 
-    private final IQuartzService quartzService;
+    private final QuartzService quartzService;
+    private final QuartzLogService quartzLogService;
 
     @Autowired
-    public QuartzController(IQuartzService quartzService) {
+    public QuartzController(QuartzService quartzService, QuartzLogService quartzLogService) {
         this.quartzService = quartzService;
+        this.quartzLogService = quartzLogService;
     }
 
     @GetMapping("/getQuartzByPage")
-    public ResultDTO getDictionaryByPage(QuartzQuery query) {
-        int total = quartzService.countQuartzs(query);
-        List<Quartz> quartzs = null;
-        if (total > 0) {
-            quartzs = quartzService.getQuartzs(query);
-        }
-        return ResultDTO.success(JSONUtils.toPageData(quartzs, total));
+    public R getDictionaryByPage(QuartzQuery query) {
+        return success(quartzService.page(query));
     }
 
     @PostMapping("/saveQuartz")
-    public ResultDTO saveDictionary(@RequestBody Quartz quartz) {
+    public R saveDictionary(@RequestBody Quartz quartz) {
         Integer id = quartz.getId();
         boolean operate;
         if (id == null || id == 0) {
-            operate = quartzService.addQuartz(quartz);
+            quartz.setStatus(false);
+            quartz.setGmtCreate(LocalDateTime.now());
+            operate = quartzService.save(quartz);
         } else {
-            operate = quartzService.updateQuartz(quartz);
+            quartz.setGmtModified(LocalDateTime.now());
+            operate = quartzService.updateById(quartz);
         }
-        return operate ? ResultDTO.success() : ResultDTO.failure("保存任务失败");
+        return operate ? success(null) : failed("保存任务失败");
     }
 
     @PostMapping("/deleteQuartzById")
-    public ResultDTO deleteQuartzById(@RequestBody Quartz quartz) {
-        return quartzService.deleteQuartzById(quartz.getId()) ? ResultDTO.success() : ResultDTO.failure("删除任务失败");
+    public R deleteQuartzById(@RequestBody Quartz quartz) {
+        return quartzService.removeById(quartz.getId()) ? success(null) : failed("删除任务失败");
     }
 
     @GetMapping("/getQuartzById")
-    public ResultDTO getQuartzById(int id) {
-        return ResultDTO.success(quartzService.getQuartzById(id));
+    public R getQuartzById(int id) {
+        return success(quartzService.getById(id));
     }
 
     @PostMapping("/changeStatus")
-    public ResultDTO changeStatus(@RequestBody Quartz quartz) {
-        return quartzService.changeStatus(quartz) ? ResultDTO.success() : ResultDTO.failure("更改状态失败");
+    public R changeStatus(@RequestBody Quartz quartz) {
+        return quartzService.changeStatus(quartz) ? success(null) : failed("更改状态失败");
     }
 
     @GetMapping("/getQuartzLogByPage")
-    public ResultDTO getQuartzLogByPage(QuartzQuery query) {
-        int total = quartzService.countQuartzLog(query);
-        List<QuartzLog> logs = null;
-        if (total > 0) {
-            logs = quartzService.getQuartzLog(query);
-        }
-        return ResultDTO.success(JSONUtils.toPageData(logs, total));
+    public R getQuartzLogByPage(Page<QuartzLog> page) {
+        return success(quartzLogService.page(page));
     }
 }

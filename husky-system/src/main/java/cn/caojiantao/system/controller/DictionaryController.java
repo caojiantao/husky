@@ -2,65 +2,65 @@ package cn.caojiantao.system.controller;
 
 import cn.caojiantao.system.model.dictionary.Dictionary;
 import cn.caojiantao.system.query.DictionaryQuery;
-import cn.caojiantao.system.service.IDictionaryService;
-import com.github.caojiantao.dto.ResultDTO;
-import com.github.caojiantao.util.JSONUtils;
+import cn.caojiantao.system.service.DictionaryService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.api.ApiController;
+import com.baomidou.mybatisplus.extension.api.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * @author caojiantao
  */
 @RestController
 @RequestMapping("/system/dictionary")
-public class DictionaryController {
+public class DictionaryController extends ApiController {
 
-    private final IDictionaryService dictionaryService;
+    private final DictionaryService dictionaryService;
 
     @Autowired
-    public DictionaryController(IDictionaryService dictionaryService) {
+    public DictionaryController(DictionaryService dictionaryService) {
         this.dictionaryService = dictionaryService;
     }
 
     @GetMapping("/getDictionaryByPage")
-    public ResultDTO getDictionaryByPage(DictionaryQuery query) {
-        int total = dictionaryService.countDictionaries(query);
-        List<Dictionary> dictionaries = null;
-        if (total > 0) {
-            dictionaries = dictionaryService.getDictionaries(query);
-        }
-        return ResultDTO.success(JSONUtils.toPageData(dictionaries, total));
+    public R getDictionaryByPage(DictionaryQuery query) {
+        QueryWrapper<Dictionary> wrapper = Wrappers.query();
+        wrapper.like("name", query.getName());
+        return success(dictionaryService.page(query, wrapper));
     }
 
     @PostMapping("/saveDictionary")
-    public ResultDTO saveDictionary(@RequestBody Dictionary dictionary) {
+    public R saveDictionary(@RequestBody Dictionary dictionary) {
         Integer id = dictionary.getId();
         boolean operate;
         if (id == null || id == 0) {
-            operate = dictionaryService.addDictionary(dictionary);
+            dictionary.setGmtCreate(LocalDateTime.now());
+            operate = dictionaryService.save(dictionary);
         } else {
-            operate = dictionaryService.updateDictionary(dictionary);
+            dictionary.setGmtModified(LocalDateTime.now());
+            operate = dictionaryService.updateById(dictionary);
         }
-        return operate ? ResultDTO.success() : ResultDTO.failure("保存字典失败");
+        return operate ? success(null) : failed("保存字典失败");
     }
 
     @GetMapping("/getDictionaryById")
-    public ResultDTO getDictionaryById(int id) {
-        return ResultDTO.success(dictionaryService.getDictionaryById(id));
+    public R getDictionaryById(int id) {
+        return success(dictionaryService.getDictionaryById(id));
     }
 
     @PostMapping("/deleteDictionaryById")
-    public ResultDTO deleteDictionaryById(@RequestBody Dictionary dictionary) {
-        return dictionaryService.deleteDictionaryById(dictionary.getId()) ? ResultDTO.success() : ResultDTO.failure("删除字典失败");
+    public R deleteDictionaryById(@RequestBody Dictionary dictionary) {
+        return dictionaryService.removeById(dictionary.getId()) ? success(null) : failed("删除字典失败");
     }
 
     @GetMapping("/getDictionariesByKeyword")
-    public ResultDTO getDictionariesByKeyword(String keyword) {
-        DictionaryQuery query = new DictionaryQuery();
-        query.setName(keyword);
-        return ResultDTO.success(dictionaryService.getDictionaries(query));
+    public R getDictionariesByKeyword(String keyword) {
+        QueryWrapper<Dictionary> wrapper = Wrappers.query();
+        wrapper.eq("name", keyword);
+        return success(dictionaryService.list(wrapper));
     }
 }
