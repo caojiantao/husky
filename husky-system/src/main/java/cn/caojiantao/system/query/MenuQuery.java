@@ -1,6 +1,7 @@
 package cn.caojiantao.system.query;
 
-import com.github.caojiantao.dto.BaseQuery;
+import cn.caojiantao.system.model.security.Menu;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -9,5 +10,5 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class MenuQuery extends BaseQuery {
+public class MenuQuery extends Page<Menu> {
 }

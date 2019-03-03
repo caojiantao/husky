@@ -6,7 +6,6 @@ import cn.caojiantao.system.model.quartz.Quartz;
 import cn.caojiantao.system.model.quartz.QuartzLog;
 import cn.caojiantao.system.service.QuartzLogService;
 import cn.caojiantao.system.service.QuartzService;
-import com.github.caojiantao.util.ExceptionUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.CronExpression;
 import org.quartz.Job;
@@ -79,7 +78,7 @@ public abstract class BaseJob implements Job {
                     log.setStatus(true);
                 } catch (Throwable e) {
                     log.setStatus(false);
-                    log.setExceptionMessage(ExceptionUtils.getStackTrace(e));
+                    log.setExceptionMessage(e.getMessage());
                 }
                 LocalDateTime end = LocalDateTime.now();
                 log.setEndTime(end);

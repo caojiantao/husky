@@ -4,7 +4,7 @@ import cn.caojiantao.system.LoginContext;
 import cn.caojiantao.system.model.security.User;
 import cn.caojiantao.system.service.UserService;
 import com.alibaba.fastjson.JSON;
-import com.github.caojiantao.dto.ResultDTO;
+import com.baomidou.mybatisplus.extension.api.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -32,9 +32,8 @@ public class AuthInterceptor implements HandlerInterceptor {
         String tokenStr = request.getHeader("X-Token");
         int userId = userService.parseToken(tokenStr);
         if (userId == 0) {
-            ResultDTO result = ResultDTO.failure("用户未登录");
             response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-            response.getWriter().write(JSON.toJSONString(result));
+            response.getWriter().write(JSON.toJSONString(R.failed("用户未登录").toString()));
             return false;
         } else {
             User curUser = userService.getById(userId);

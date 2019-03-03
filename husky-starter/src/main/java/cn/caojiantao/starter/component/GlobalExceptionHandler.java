@@ -2,7 +2,6 @@ package cn.caojiantao.starter.component;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.api.R;
-import com.github.caojiantao.dto.ResultDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;

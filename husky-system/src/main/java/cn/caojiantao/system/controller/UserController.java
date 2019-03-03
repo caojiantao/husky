@@ -2,7 +2,6 @@ package cn.caojiantao.system.controller;
 
 import cn.caojiantao.system.LoginContext;
 import cn.caojiantao.system.dto.UserDTO;
-import cn.caojiantao.system.model.security.Role;
 import cn.caojiantao.system.model.security.User;
 import cn.caojiantao.system.query.UserQuery;
 import cn.caojiantao.system.service.UserService;
@@ -11,11 +10,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.baomidou.mybatisplus.extension.api.R;
-import com.github.caojiantao.util.JSONUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @author caojiantao

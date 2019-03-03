@@ -114,12 +114,6 @@
             <artifactId>springfox-swagger-ui</artifactId>
             <version>2.6.1</version>
         </dependency>
-        <!-- 个人公共依赖 -->
-        <dependency>
-            <groupId>com.github.caojiantao</groupId>
-            <artifactId>common</artifactId>
-            <version>1.2</version>
-        </dependency>
         <!-- jwt token认证 -->
         <dependency>
             <groupId>com.auth0</groupId>
@@ -131,6 +125,12 @@
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>3.1.0</version>
+        </dependency>
+        <!-- JSON转换工具类 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.47</version>
         </dependency>
     </dependencies>
 
