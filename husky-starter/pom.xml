@@ -28,4 +28,39 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!-- Jar包瘦身 -->
+                    <layout>ZIP</layout>
+                    <includes>
+                        <include>
+                            <groupId>cn.caojiantao</groupId>
+                            <artifactId>husky-common</artifactId>
+                        </include>
+                        <include>
+                            <groupId>cn.caojiantao</groupId>
+                            <artifactId>husky-system</artifactId>
+                        </include>
+                        <include>
+                            <groupId>cn.caojiantao</groupId>
+                            <artifactId>husky-exercise</artifactId>
+                        </include>
+                    </includes>
+                    <mainClass>cn.caojiantao.starter.StarterApplication</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
