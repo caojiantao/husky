@@ -42,7 +42,7 @@ public class MyWebConfiguration implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns(Arrays.asList("/", "/css/**", "/fonts/**", "/img/**", "/js/", "/index.html"))
+                .excludePathPatterns(Arrays.asList("/", "/css/**", "/fonts/**", "/img/**", "/js/**", "/index.html"))
                 .excludePathPatterns("/system/security/user/login");
     }
 }
