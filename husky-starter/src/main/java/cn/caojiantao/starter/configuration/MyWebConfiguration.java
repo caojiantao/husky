@@ -10,10 +10,11 @@ import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.Arrays;
+
 /**
  * @author caojiantao
  * @date 2018-10-24 16:03:06
- * @description
  */
 @Configuration
 public class MyWebConfiguration implements WebMvcConfigurer {
@@ -41,6 +42,7 @@ public class MyWebConfiguration implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/**")
+                .excludePathPatterns(Arrays.asList("/", "/css/**", "/fonts/**", "/img/**", "/js/", "/index.html"))
                 .excludePathPatterns("/system/security/user/login");
     }
 }
