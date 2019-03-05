@@ -1,9 +1,12 @@
 package cn.caojiantao.husky.exercise.model;
 
 import cn.caojiantao.common.base.BaseModel;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.time.LocalDateTime;
 
 /**
  * @author caojiantao
@@ -15,4 +18,7 @@ public class Pushup extends BaseModel {
 
     private Integer userId;
     private Integer number;
+
+    @TableField("`time`")
+    private LocalDateTime time;
 }

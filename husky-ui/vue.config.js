@@ -1,5 +1,5 @@
 module.exports = {
-  outputDir: 'public',
+  outputDir: 'static',
   devServer: {
     port: 9000
   }

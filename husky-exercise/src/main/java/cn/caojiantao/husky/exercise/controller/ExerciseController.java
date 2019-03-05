@@ -15,8 +15,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-
 /**
  * @author caojiantao
  */
@@ -52,10 +50,14 @@ public class ExerciseController extends ApiController {
         return success(pushupService.page(page));
     }
 
+    @GetMapping("/getPushupById")
+    public R getPushupById(int id) {
+        return success(pushupService.getById(id));
+    }
+
     @PostMapping("/savePushup")
     public R savePushup(@RequestBody Pushup pushup) {
-        pushup.setGmtCreate(LocalDateTime.now());
-        return pushupService.save(pushup) ? success(null) : failed(ApiErrorCode.FAILED);
+        return pushupService.saveOrUpdate(pushup) ? success(null) : failed(ApiErrorCode.FAILED);
     }
 
     @PostMapping("/deletePushupById")

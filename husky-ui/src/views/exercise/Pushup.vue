@@ -13,6 +13,7 @@
       :columns="columns"
     >
       <template slot="operate" slot-scope="scope">
+        <el-button size="medium" icon="el-icon-edit" @click="editRow(scope.row)">编辑</el-button>
         <el-button size="medium" icon="el-icon-delete" @click="removeRow(scope.row)">删除</el-button>
       </template>
     </Pagination>
@@ -34,6 +35,14 @@
         <el-form-item label="个数">
           <el-input v-model="dialogModel.form.number"></el-input>
         </el-form-item>
+        <el-form-item label="时间">
+          <el-date-picker
+            v-model="dialogModel.form.time"
+            type="datetime"
+            placeholder="选择日期时间"
+            value-format="yyyy-MM-dd HH:mm:ss">
+          </el-date-picker>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogModel.visible=false">取 消</el-button>
@@ -54,10 +63,14 @@ export default {
       columns: [
         { prop: "userId", label: "用户" },
         { prop: "number", label: "个数" },
-        { prop: "gmtCreate", label: "时间" },
+        { prop: "time", label: "时间" },
         { label: "操作", slotName: "operate" }
       ],
-      dialogModel: this.getInitDialogModel(),
+      dialogModel: {
+        title: "",
+        visible: false,
+        form: this.getInitForm()
+      },
     };
   },
   mounted: function() {
@@ -68,19 +81,29 @@ export default {
       // 调用子组件查询方法
       this.$refs["husky-pagination"].search();
     },
-    getInitDialogModel: function() {
+    getInitForm: function() {
       return {
-        title: "",
-        visible: false,
-        form: {}
+        time: new Date()
       };
     },
     addRow: function() {
       this.dialogModel = {
         title: "新增任务",
         visible: true,
-        form: {}
+        form: this.getInitForm()
       };
+    },
+    editRow: function(row) {
+      this.$axios
+        .get("/exercise/getPushupById?id=" + row.id)
+        .then(pushup => {
+          // 展示对话框
+          this.dialogModel = {
+            title: "编辑俯卧撑",
+            visible: true,
+            form: pushup
+          };
+        });
     },
     removeRow(row) {
       this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
