@@ -43,7 +43,7 @@ export default {
     };
   },
   methods: {
-    search: function() {
+    search: function(format) {
       this.loading = true;
       let queryWrapper = {
         current: this.curPage,
@@ -60,6 +60,9 @@ export default {
           this.loading = false;
           this.records = result.records;
           this.total = result.total;
+          if (format) {
+            format(this.records);
+          }
         });
     },
     // 分页大小改变

@@ -33,7 +33,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         int userId = userService.parseToken(tokenStr);
         if (userId == 0) {
             response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-            response.getWriter().write(JSON.toJSONString(R.failed("用户未登录").toString()));
+            response.getWriter().write(JSON.toJSONString(R.failed("用户未登录")));
             return false;
         } else {
             User curUser = userService.getById(userId);

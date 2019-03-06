@@ -17,8 +17,6 @@ import java.time.LocalDateTime;
 public class Pushup extends BaseModel {
 
     private Integer userId;
-    private Integer number;
-
-    @TableField("`time`")
     private LocalDateTime time;
+    private Integer number;
 }

@@ -35,15 +35,29 @@ public class ExerciseController extends ApiController {
         this.situpService = situpService;
     }
 
+    // 引体向上
+
     @GetMapping("/getChinningByPage")
     public R getChinningByPage(Page<Chinning> page) {
         return success(chinningService.page(page));
     }
 
+    @GetMapping("/getChinningById")
+    public R getChinningById(int id) {
+        return success(chinningService.getById(id));
+    }
+
     @PostMapping("/saveChinning")
     public R saveChinning(@RequestBody Chinning chinning) {
-        return chinningService.save(chinning) ? success(null) : failed(ApiErrorCode.FAILED);
+        return chinningService.saveOrUpdate(chinning) ? success(null) : failed(ApiErrorCode.FAILED);
     }
+
+    @PostMapping("/deleteChinningById")
+    public R deleteChinningById(@RequestBody Chinning chinning) {
+        return chinningService.removeById(chinning.getId()) ? success(null) : failed(ApiErrorCode.FAILED);
+    }
+
+    // 俯卧撑
 
     @GetMapping("/getPushupByPage")
     public R getPushupByPage(Page<Pushup> page) {
@@ -65,23 +79,47 @@ public class ExerciseController extends ApiController {
         return pushupService.removeById(pushup.getId()) ? success(null) : failed(ApiErrorCode.FAILED);
     }
 
+    // 跑步
+
     @GetMapping("/getRunByPage")
     public R getRunByPage(Page<Run> page) {
         return success(runService.page(page));
     }
 
-    @PostMapping("/saveRun")
-    public R saveRun(@RequestBody Run run) {
-        return runService.save(run) ? success(null) : failed(ApiErrorCode.FAILED);
+    @GetMapping("/getRunById")
+    public R getRunById(int id) {
+        return success(runService.getById(id));
     }
 
-    @GetMapping("/geSitupByPage")
+    @PostMapping("/saveRun")
+    public R saveRun(@RequestBody Run run) {
+        return runService.saveOrUpdate(run) ? success(null) : failed(ApiErrorCode.FAILED);
+    }
+
+    @PostMapping("/deleteRunById")
+    public R deleteRunById(@RequestBody Run run) {
+        return runService.removeById(run.getId()) ? success(null) : failed(ApiErrorCode.FAILED);
+    }
+
+    // 仰卧起坐
+
+    @GetMapping("/getSitupByPage")
     public R geSitupByPage(Page<Situp> page) {
         return success(situpService.page(page));
     }
 
+    @GetMapping("/getSitupById")
+    public R getSitupById(int id) {
+        return success(situpService.getById(id));
+    }
+
     @PostMapping("/saveSitup")
     public R saveRun(@RequestBody Situp situp) {
-        return situpService.save(situp) ? success(null) : failed(ApiErrorCode.FAILED);
+        return situpService.saveOrUpdate(situp) ? success(null) : failed(ApiErrorCode.FAILED);
+    }
+
+    @PostMapping("/deleteSitupById")
+    public R deleteSitupById(@RequestBody Situp situp) {
+        return situpService.removeById(situp.getId()) ? success(null) : failed(ApiErrorCode.FAILED);
     }
 }
