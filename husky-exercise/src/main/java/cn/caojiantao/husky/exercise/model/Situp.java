@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 public class Situp extends BaseModel {
 
     private Integer userId;
+    private LocalDate date;
     private LocalDateTime time;
     private Integer number;
 }

@@ -38,12 +38,12 @@
         <el-form-item label="耗时（秒）">
           <el-input v-model="dialogModel.form.second"></el-input>
         </el-form-item>
-        <el-form-item label="时间">
+        <el-form-item label="日期">
           <el-date-picker
-            v-model="dialogModel.form.time"
-            type="datetime"
-            placeholder="选择日期时间"
-            value-format="yyyy-MM-dd HH:mm:ss">
+            v-model="dialogModel.form.date"
+            type="date"
+            placeholder="选择日期"
+            value-format="yyyy-MM-dd">
           </el-date-picker>
         </el-form-item>
       </el-form>
@@ -67,7 +67,7 @@ export default {
         { prop: "userId", label: "用户" },
         { prop: "distance", label: "距离" },
         { prop: "formatSecond", label: "耗时" },
-        { prop: "time", label: "时间" },
+        { prop: "date", label: "日期" },
         { label: "操作", slotName: "operate" }
       ],
       dialogModel: {
@@ -105,7 +105,6 @@ export default {
     },
     getInitForm: function() {
       return {
-        time: new Date()
       };
     },
     addRow: function() {

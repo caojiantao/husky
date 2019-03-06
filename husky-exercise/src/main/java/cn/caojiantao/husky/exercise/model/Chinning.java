@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 public class Chinning extends BaseModel {
 
     private Integer userId;
-    @TableField("`time`")
+    private LocalDate date;
     private LocalDateTime time;
     private Integer number;
 }
