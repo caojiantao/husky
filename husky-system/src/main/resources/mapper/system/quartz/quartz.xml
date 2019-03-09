@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
-<mapper namespace="cn.caojiantao.system.mapper.quartz.QuartzMapper">
+<mapper namespace="cn.caojiantao.huksy.system.mapper.quartz.QuartzMapper">
 
-    <resultMap id="baseMap" type="cn.caojiantao.system.model.quartz.Quartz">
+    <resultMap id="baseMap" type="cn.caojiantao.huksy.system.model.quartz.Quartz">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="group" property="group"/>
@@ -15,7 +15,7 @@
         <result column="gmt_modified" property="gmtModified"/>
     </resultMap>
 
-    <update id="updateStatusById" parameterType="cn.caojiantao.system.model.quartz.Quartz">
+    <update id="updateStatusById" parameterType="cn.caojiantao.huksy.system.model.quartz.Quartz">
         UPDATE system_quartz
         SET status       = #{status},
             gmt_modified = #{gmtModified}

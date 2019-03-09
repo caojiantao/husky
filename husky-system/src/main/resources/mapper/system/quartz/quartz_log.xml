@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
-<mapper namespace="cn.caojiantao.system.mapper.quartz.QuartzLogMapper">
+<mapper namespace="cn.caojiantao.huksy.system.mapper.quartz.QuartzLogMapper">
 
-    <resultMap id="baseMap" type="cn.caojiantao.system.model.quartz.QuartzLog">
+    <resultMap id="baseMap" type="cn.caojiantao.huksy.system.model.quartz.QuartzLog">
         <id column="id" property="id"/>
         <result column="quartz_id" property="quartzId"/>
         <result column="status" property="status"/>
@@ -49,7 +49,7 @@
         FROM system_quartz_log
     </select>
 
-    <insert id="insert" parameterType="cn.caojiantao.system.model.quartz.QuartzLog" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="cn.caojiantao.huksy.system.model.quartz.QuartzLog" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO system_quartz_log (`quartz_id`, `status`, `start_time`, `end_time`)
         VALUES (#{quartzId}, #{status}, #{startTime}, #{endTime})
     </insert>

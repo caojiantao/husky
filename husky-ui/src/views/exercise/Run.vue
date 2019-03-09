@@ -105,6 +105,7 @@ export default {
     },
     getInitForm: function() {
       return {
+        date: (new Date()).format("yyyy-MM-dd")
       };
     },
     addRow: function() {

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace用作标识mapper的唯一，通常包名+文件名 -->
-<mapper namespace="cn.caojiantao.system.mapper.security.RoleMenuMapper">
+<mapper namespace="cn.caojiantao.huksy.system.mapper.security.RoleMenuMapper">
 
-    <insert id="saveRoleMenus" parameterType="cn.caojiantao.system.model.security.Role">
+    <insert id="saveRoleMenus" parameterType="cn.caojiantao.huksy.system.model.security.Role">
         INSERT INTO system_role_menu (`role_id`, `menu_id`) VALUES
         <foreach collection="list" item="item" separator=",">
             (#{item.roleId}, #{item.menuId})
