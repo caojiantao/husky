@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>husky</artifactId>
-        <groupId>cn.caojiantao</groupId>
+        <groupId>cn.caojiantao.husky</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -15,7 +15,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>cn.caojiantao</groupId>
+            <groupId>cn.caojiantao.husky</groupId>
             <artifactId>husky-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>

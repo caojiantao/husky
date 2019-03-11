@@ -13,9 +13,18 @@ spring:
     encoding:
       force: true
       charset: UTF-8
+  servlet:
+    multipart:
+      max-file-size: 10Mb
 
 mybatis-plus:
   mapper-locations: classpath*:mapper/**/*.xml
+
+qiniu:
+  domain: http://po4leviy6.bkt.clouddn.com/
+  access-key: 76ACZobjNtnou0OgwjlQv4ieJxZ8gXvlCPFSFHMW
+  secret-key: 1uI-_dF0kKK_1UvPF1FjKSQoWFef3PTe_mX3SOZV
+  bucket: husky
 
 server:
   port: 8080

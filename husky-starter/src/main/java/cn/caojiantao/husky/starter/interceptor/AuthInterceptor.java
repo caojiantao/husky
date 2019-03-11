@@ -1,8 +1,8 @@
 package cn.caojiantao.husky.starter.interceptor;
 
-import cn.caojiantao.huksy.system.LoginContext;
-import cn.caojiantao.huksy.system.model.security.User;
-import cn.caojiantao.huksy.system.service.UserService;
+import cn.caojiantao.husky.system.LoginContext;
+import cn.caojiantao.husky.system.model.security.User;
+import cn.caojiantao.husky.system.service.UserService;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.api.R;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -10,21 +10,27 @@
     <name>husky-starter</name>
 
     <parent>
-        <groupId>cn.caojiantao</groupId>
+        <groupId>cn.caojiantao.husky</groupId>
         <artifactId>husky</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
     <dependencies>
         <dependency>
-            <groupId>cn.caojiantao</groupId>
+            <groupId>cn.caojiantao.husky</groupId>
             <artifactId>husky-system</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
-            <groupId>cn.caojiantao</groupId>
+            <groupId>cn.caojiantao.husky</groupId>
             <artifactId>husky-exercise</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.caojiantao.husky</groupId>
+            <artifactId>husky-resource</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
@@ -39,19 +45,23 @@
                     <layout>ZIP</layout>
                     <includes>
                         <include>
-                            <groupId>cn.caojiantao</groupId>
+                            <groupId>cn.caojiantao.husky</groupId>
                             <artifactId>husky-common</artifactId>
                         </include>
                         <include>
-                            <groupId>cn.caojiantao</groupId>
+                            <groupId>cn.caojiantao.husky</groupId>
                             <artifactId>husky-system</artifactId>
                         </include>
                         <include>
-                            <groupId>cn.caojiantao</groupId>
+                            <groupId>cn.caojiantao.husky</groupId>
                             <artifactId>husky-exercise</artifactId>
                         </include>
+                        <include>
+                            <groupId>cn.caojiantao.husky</groupId>
+                            <artifactId>husky-resource</artifactId>
+                        </include>
                     </includes>
-                    <mainClass>cn.caojiantao.starter.StarterApplication</mainClass>
+                    <mainClass>cn.caojiantao.husky.starter.StarterApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>

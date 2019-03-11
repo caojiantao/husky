@@ -7,8 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * @author caojiantao
  */
-@SpringBootApplication(scanBasePackages = "cn.caojiantao")
-@MapperScan("cn.caojiantao.**.mapper")
+@SpringBootApplication(scanBasePackages = "cn.caojiantao.husky")
+@MapperScan("cn.caojiantao.husky.**.mapper")
 public class StarterApplication {
 
     public static void main(String[] args) {
