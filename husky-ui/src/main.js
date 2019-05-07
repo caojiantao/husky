@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import './plugins/axios'
+import './plugins/api'
 import './plugins/element.js'
 import App from './App.vue'
 import store from './store'
@@ -22,10 +22,10 @@ new Vue({
     let token = getToken();
     if (token) {
       // 保存user至vuex
-      this.$axios.get('/system/security/user/getCurrentUser').then(user => {
+      this.$api.get('/system/security/user/getCurrentUser').then(user => {
         store.commit('setUser', user);
         // 动态创建导航菜单以及对应路由
-        initMenusAndRoutes(user.id, store, this.$axios, router);
+        initMenusAndRoutes(user.id);
       })
     }
   }

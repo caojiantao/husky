@@ -112,7 +112,7 @@ export default {
     },
     editRow: function(row) {
       // 首先获取角色基本信息
-      this.$axios
+      this.$api
         .get("/system/security/user/getUserWithRolesById?id=" + row.id)
         .then(user => {
           let roleIds = [];
@@ -138,7 +138,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          this.$axios
+          this.$api
             .post("/system/security/user/deleteUserById", {
               id: row.id
             })
@@ -157,7 +157,7 @@ export default {
           this.dialogModel.roleIds.forEach(roleId =>
             user.roleDTOS.push({ id: roleId })
           );
-          this.$axios
+          this.$api
             .post("/system/security/user/saveUser", user)
             .then(() => {
               this.dialogModel.visible = false;
@@ -170,7 +170,7 @@ export default {
       });
     },
     getAllRoles() {
-      this.$axios
+      this.$api
         .get("/system/security/role/getAllRoles")
         .then(roles => {
           this.roles = roles;

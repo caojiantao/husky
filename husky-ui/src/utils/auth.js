@@ -1,3 +1,7 @@
+import router from '@/router'
+import {api} from '@/plugins/api.js'
+import store from '@/store.js'
+
 const getToken = () => localStorage.getItem('token')
 
 const saveToken = (token) => {
@@ -8,9 +12,9 @@ const clearToken = () => {
     window.localStorage.removeItem('token')
 }
 
-const initMenusAndRoutes = (userId, store, _axios, router) => {
+const initMenusAndRoutes = (userId) => {
     // 获取当前用户的菜单信息
-    _axios
+    api
         .get("/system/security/menu/getMenusByUserId", {
             params: {
                 userId: userId

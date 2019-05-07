@@ -52,7 +52,7 @@ export default {
       if (this.query) {
         Object.assign(queryWrapper, this.query);
       }
-      this.$axios
+      this.$api
         .get(this.url, {
           params: queryWrapper
         })

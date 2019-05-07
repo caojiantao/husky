@@ -91,7 +91,7 @@ export default {
       };
     },
     getMenus() {
-      this.$axios
+      this.$api
         .get("/system/security/menu/getAllMenus")
         .then(menus => {
           this.menus = menus;
@@ -102,7 +102,7 @@ export default {
     submitForm() {
       this.$refs["menu"].validate(valid => {
         if (valid) {
-          this.$axios
+          this.$api
             .post("/system/security/menu/saveMenu", this.dialogModel.form)
             .then(() => {
               this.dialogModel.visible = false;
@@ -142,7 +142,7 @@ export default {
             },
             on: {
               click: () => {
-                this.$axios
+                this.$api
                   .get("/system/security/menu/getMenuById", {
                     params: {
                       id: data.id
@@ -195,7 +195,7 @@ export default {
     },
     // 删除菜单
     removeMenu(id) {
-      this.$axios
+      this.$api
         .post("/system/security/menu/deleteMenuById", {
           id: id
         })

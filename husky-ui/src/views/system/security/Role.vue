@@ -88,7 +88,7 @@ export default {
   },
   created: function() {
     // 加载所有菜单树
-    this.$axios
+    this.$api
       .get("/system/security/menu/getAllMenus")
       .then(menus => {
         this.menus = menus;
@@ -119,7 +119,7 @@ export default {
     },
     editRole(item) {
       // 首先获取角色基本信息
-      this.$axios
+      this.$api
         .get("/system/security/role/getRoleWithMenusById?id=" + item.id)
         .then(data => {
           // 展示对话框
@@ -154,7 +154,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          this.$axios
+          this.$api
             .post("/system/security/role/deleteRoleById", {
               id: item.id
             })
@@ -179,7 +179,7 @@ export default {
             })
           );
           this.dialogModel.form["menus"] = menus;
-          this.$axios
+          this.$api
             .post("/system/security/role/saveRole", this.dialogModel.form)
             .then(() => {
               this.dialogModel.visible = false;

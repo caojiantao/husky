@@ -114,7 +114,7 @@ export default {
       };
     },
     editRow: function(row) {
-      this.$axios
+      this.$api
         .get("/resource/audio/getAudioById?id=" + row.id)
         .then(audio => {
           // 展示对话框
@@ -132,7 +132,7 @@ export default {
         type: "warning"
       })
       .then(() => {
-        this.$axios
+        this.$api
           .post("/resource/audio/deleteAudioById", {
             id: row.id
           })
@@ -148,7 +148,7 @@ export default {
         if (valid) {
           // 深拷贝，避免改变表单页面数据
           let audio = JSON.parse(JSON.stringify(this.dialogModel.form));
-          this.$axios
+          this.$api
             .post("/resource/audio/saveAudio", audio)
             .then(() => {
               this.dialogModel.visible = false;
@@ -178,7 +178,7 @@ export default {
       if (this.validFile(file)) {
         let data = new FormData();
         data.append('file', task.file);
-        this.$axios.post('/file/upload', data,
+        this.$api.post('/file/upload', data,
             {
               headers: {'Content-Type': 'multipart/form-data'},
               onUploadProgress: progressEvent => {

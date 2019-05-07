@@ -24,12 +24,6 @@
 
         <dependency>
             <groupId>cn.caojiantao.husky</groupId>
-            <artifactId>husky-exercise</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cn.caojiantao.husky</groupId>
             <artifactId>husky-resource</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>

@@ -10,7 +10,6 @@
         <module>husky-system</module>
         <module>husky-common</module>
         <module>husky-starter</module>
-        <module>husky-exercise</module>
         <module>husky-resource</module>
         <module>husky-generate</module>
     </modules>

@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { saveToken, initMenusAndRoutes } from "@/utils/auth.js";
+import { saveToken } from "@/utils/auth.js";
 
 export default {
   name: "login",
@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     submitForm: function() {
-      this.$axios
+      this.$api
         .post("/system/security/user/login", this.loginModel)
         .then(data => {
           let token = data.token;
@@ -36,13 +36,8 @@ export default {
           // 保存用户登录凭据
           saveToken(token);
           this.$store.commit("setUser", user);
-          // 初始化当前用户菜单及路由
-          initMenusAndRoutes(user.id, this.$store, this.$axios, this.$router);
-          // 地址跳转
-          let redirect = this.$route.query.redirect;
-          this.$router.push({
-            path: redirect ? redirect : "/"
-          });
+          // 地址跳转（重定向避免动态路由重复加载）
+          window.location.href = "/";
         })
         .catch(() => {});
     }

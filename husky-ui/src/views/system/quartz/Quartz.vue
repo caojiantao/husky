@@ -99,7 +99,7 @@ export default {
       };
     },
     editRow: function(row) {
-      this.$axios
+      this.$api
         .get("/system/quartz/getQuartzById?id=" + row.id)
         .then(quartz => {
           this.dialogModel = {
@@ -116,7 +116,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          this.$axios
+          this.$api
             .post("/system/quartz/deleteQuartzById", {
               id: row.id
             })
@@ -130,7 +130,7 @@ export default {
     submitForm() {
       this.$refs["quartz"].validate(valid => {
         if (valid) {
-          this.$axios
+          this.$api
             .post("/system/quartz/saveQuartz", this.dialogModel.form)
             .then(() => {
               this.dialogModel.visible = false;
@@ -147,7 +147,7 @@ export default {
       this.$refs['quartz'].resetFields();
     },
     changeStatus(id, status) {
-      this.$axios
+      this.$api
         .post("/system/quartz/changeStatus", {
             id: id,
             status: status

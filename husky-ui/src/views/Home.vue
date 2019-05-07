@@ -84,7 +84,7 @@ export default {
       })
       .then(() => {
         clearToken();
-        this.$router.push({path: '/login'});
+        window.location.href = "/";
       })
       .catch(() => {});
     }

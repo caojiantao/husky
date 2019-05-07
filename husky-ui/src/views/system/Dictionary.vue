@@ -122,7 +122,7 @@ export default {
       };
     },
     editRow: function(row) {
-      this.$axios
+      this.$api
         .get("/system/dictionary/getDictionaryById?id=" + row.id)
         .then(dictionary => {
           if(dictionary.parentId) {
@@ -150,7 +150,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          this.$axios
+          this.$api
             .post("/system/dictionary/deleteDictionaryById", {
               id: row.id
             })
@@ -170,7 +170,7 @@ export default {
             // 父级节点未选中默认值0
             dictionary.parentId = 0;
           }
-          this.$axios
+          this.$api
             .post("/system/dictionary/saveDictionary", dictionary)
             .then(() => {
               this.dialogModel.visible = false;
@@ -187,7 +187,7 @@ export default {
       this.options = [];
       if(keyword) {
         this.optionsLoading = true;
-        this.$axios
+        this.$api
           .get("/system/dictionary/getDictionariesByKeyword?keyword=" + keyword)
           .then(dictionaries => {
             this.optionsLoading = false;

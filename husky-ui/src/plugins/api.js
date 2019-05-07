@@ -16,9 +16,9 @@ let config = {
   // withCredentials: true, // Check cross-site Access-Control
 };
 
-const _axios = axios.create(config);
+const api = axios.create(config);
 
-_axios.interceptors.request.use(
+api.interceptors.request.use(
   function (config) {
     // token赋值
     let token = getToken();
@@ -32,7 +32,7 @@ _axios.interceptors.request.use(
   }
 );
 
-_axios.interceptors.response.use(
+api.interceptors.response.use(
   function (response) {
     let responseData = response.data
     if (responseData.code === 0) {
@@ -53,9 +53,9 @@ _axios.interceptors.response.use(
 
 Plugin.install = function (Vue) {
   Object.defineProperties(Vue.prototype, {
-    $axios: {
+    $api: {
       get() {
-        return _axios;
+        return api;
       }
     },
   });
@@ -66,5 +66,5 @@ Vue.use(Plugin)
 export default Plugin;
 
 export {
-  _axios
+  api
 }

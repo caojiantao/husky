@@ -148,7 +148,7 @@ export default {
       };
     },
     editRow: function(row) {
-      this.$axios
+      this.$api
         .get("/resource/people/getPeopleById?id=" + row.id)
         .then(people => {
           // 展示对话框
@@ -166,7 +166,7 @@ export default {
         type: "warning"
       })
       .then(() => {
-        this.$axios
+        this.$api
           .post("/resource/people/deletePeopleById", {
             id: row.id
           })
@@ -182,7 +182,7 @@ export default {
         if (valid) {
           // 深拷贝，避免改变表单页面数据
           let people = JSON.parse(JSON.stringify(this.dialogModel.form));
-          this.$axios
+          this.$api
             .post("/resource/people/savePeople", people)
             .then(() => {
               this.dialogModel.visible = false;
@@ -216,7 +216,7 @@ export default {
       if (this.validFile(file)) {
         let data = new FormData();
         data.append('file', task.file);
-        this.$axios.post('/file/upload', data,
+        this.$api.post('/file/upload', data,
             {
               headers: {'Content-Type': 'multipart/form-data'}
             }
