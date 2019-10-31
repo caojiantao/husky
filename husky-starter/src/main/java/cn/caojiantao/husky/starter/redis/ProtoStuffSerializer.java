@@ -7,7 +7,7 @@ import org.springframework.data.redis.serializer.SerializationException;
 
 /**
  * @author caojiantao
- * @since 2018-10-05 00:39:00
+ *
  */
 public class ProtoStuffSerializer<T> implements RedisSerializer<T> {
 

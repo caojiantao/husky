@@ -21,12 +21,6 @@
             <artifactId>husky-system</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-
-        <dependency>
-            <groupId>cn.caojiantao.husky</groupId>
-            <artifactId>husky-resource</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
     </dependencies>
 
     <build>
@@ -49,10 +43,6 @@
                         <include>
                             <groupId>cn.caojiantao.husky</groupId>
                             <artifactId>husky-exercise</artifactId>
-                        </include>
-                        <include>
-                            <groupId>cn.caojiantao.husky</groupId>
-                            <artifactId>husky-resource</artifactId>
                         </include>
                     </includes>
                     <mainClass>cn.caojiantao.husky.starter.StarterApplication</mainClass>

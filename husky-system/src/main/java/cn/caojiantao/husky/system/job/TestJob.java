@@ -6,7 +6,7 @@ package cn.caojiantao.husky.system.job;
 public class TestJob extends BaseJob {
 
     @Override
-    public void doExecute() {
+    public String doExecute() {
         System.out.println("=============== start ===============");
         System.out.println(Thread.currentThread().getName() + "is running...");
         try {
@@ -14,5 +14,6 @@ public class TestJob extends BaseJob {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        return "test job 执行成功";
     }
 }

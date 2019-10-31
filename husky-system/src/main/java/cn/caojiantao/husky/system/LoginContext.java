@@ -1,19 +1,19 @@
 package cn.caojiantao.husky.system;
 
-import cn.caojiantao.husky.system.model.security.User;
+import cn.caojiantao.husky.system.model.security.SystemUser;
 
 /**
  * @author caojiantao
  */
 public class LoginContext {
 
-    private static ThreadLocal<User> userLocal = new ThreadLocal<>();
+    private static ThreadLocal<SystemUser> userLocal = new ThreadLocal<>();
 
-    public static void setUser(User user) {
-        userLocal.set(user);
+    public static void setUser(SystemUser systemUser) {
+        userLocal.set(systemUser);
     }
 
-    public static User getUser() {
+    public static SystemUser getUser() {
         return userLocal.get();
     }
 

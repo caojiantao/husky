@@ -14,7 +14,7 @@
 
     <Pagination
       ref="husky-pagination"
-      url="/system/dictionary/getDictionaryByPage"
+      url="/system/systemDictionary/getDictionaryByPage"
       :query="query"
       :columns="columns"
     >
@@ -32,7 +32,7 @@
       @closed="dialogClosed"
     >
       <el-form
-        ref="dictionary"
+        ref="systemDictionary"
         :model="dialogModel.form" 
         label-width="80px">
         <el-form-item label="父级" prop="parentId">
@@ -123,23 +123,23 @@ export default {
     },
     editRow: function(row) {
       this.$api
-        .get("/system/dictionary/getDictionaryById?id=" + row.id)
-        .then(dictionary => {
-          if(dictionary.parentId) {
+        .get("/system/systemDictionary/getDictionaryById?id=" + row.id)
+        .then(systemDictionary => {
+          if(systemDictionary.parentId) {
             // 存在父级节点增加对应OPTION
             this.options.push({
-              value: dictionary.parentId,
-              label: dictionary.parentName
+              value: systemDictionary.parentId,
+              label: systemDictionary.parentName
             })
           } else {
             // 否则赋值null，重置下拉框
-            dictionary.parentId = null;
+            systemDictionary.parentId = null;
           }
           // 展示对话框
           this.dialogModel = {
             title: "编辑字典",
             visible: true,
-            form: dictionary
+            form: systemDictionary
           };
         });
     },
@@ -151,7 +151,7 @@ export default {
       })
         .then(() => {
           this.$api
-            .post("/system/dictionary/deleteDictionaryById", {
+            .post("/system/systemDictionary/deleteDictionaryById", {
               id: row.id
             })
             .then(() => {
@@ -162,16 +162,16 @@ export default {
         .catch(() => {});
     },
     submitForm() {
-      this.$refs["dictionary"].validate(valid => {
+      this.$refs["systemDictionary"].validate(valid => {
         if (valid) {
           // 深拷贝，避免改变表单页面数据
-          let dictionary = JSON.parse(JSON.stringify(this.dialogModel.form));
-          if (!dictionary.parentId) {
+          let systemDictionary = JSON.parse(JSON.stringify(this.dialogModel.form));
+          if (!systemDictionary.parentId) {
             // 父级节点未选中默认值0
-            dictionary.parentId = 0;
+            systemDictionary.parentId = 0;
           }
           this.$api
-            .post("/system/dictionary/saveDictionary", dictionary)
+            .post("/system/systemDictionary/saveDictionary", systemDictionary)
             .then(() => {
               this.dialogModel.visible = false;
               this.search();
@@ -188,14 +188,14 @@ export default {
       if(keyword) {
         this.optionsLoading = true;
         this.$api
-          .get("/system/dictionary/getDictionariesByKeyword?keyword=" + keyword)
+          .get("/system/systemDictionary/getDictionariesByKeyword?keyword=" + keyword)
           .then(dictionaries => {
             this.optionsLoading = false;
             if(dictionaries && dictionaries.length > 0) {
-              dictionaries.forEach(dictionary => {
+              dictionaries.forEach(systemDictionary => {
                 this.options.push({
-                  value: dictionary.id,
-                  label: dictionary.name
+                  value: systemDictionary.id,
+                  label: systemDictionary.name
                 });
               })
             }
@@ -205,7 +205,7 @@ export default {
     // 对话框完全关闭事件
     dialogClosed() {
       this.options = [];
-      this.$refs['dictionary'].resetFields();
+      this.$refs['systemDictionary'].resetFields();
     }
   }
 };

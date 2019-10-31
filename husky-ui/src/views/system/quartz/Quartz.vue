@@ -8,7 +8,7 @@
 
     <Pagination
       ref="husky-pagination"
-      url="/system/quartz/getQuartzByPage"
+      url="/system/systemQuartz/getQuartzByPage"
       :query="query"
       :columns="columns"
     >
@@ -29,7 +29,7 @@
       @closed="dialogClosed"
     >
       <el-form
-        ref="quartz"
+        ref="systemQuartz"
         :model="dialogModel.form" 
         label-width="80px">
         <el-form-item label="分组">
@@ -100,12 +100,12 @@ export default {
     },
     editRow: function(row) {
       this.$api
-        .get("/system/quartz/getQuartzById?id=" + row.id)
-        .then(quartz => {
+        .get("/system/systemQuartz/getQuartzById?id=" + row.id)
+        .then(systemQuartz => {
           this.dialogModel = {
             title: "编辑字典",
             visible: true,
-            form: quartz
+            form: systemQuartz
           };
         });
     },
@@ -117,7 +117,7 @@ export default {
       })
         .then(() => {
           this.$api
-            .post("/system/quartz/deleteQuartzById", {
+            .post("/system/systemQuartz/deleteQuartzById", {
               id: row.id
             })
             .then(() => {
@@ -128,10 +128,10 @@ export default {
         .catch(() => {});
     },
     submitForm() {
-      this.$refs["quartz"].validate(valid => {
+      this.$refs["systemQuartz"].validate(valid => {
         if (valid) {
           this.$api
-            .post("/system/quartz/saveQuartz", this.dialogModel.form)
+            .post("/system/systemQuartz/saveQuartz", this.dialogModel.form)
             .then(() => {
               this.dialogModel.visible = false;
               this.search();
@@ -144,11 +144,11 @@ export default {
     },
     // 对话框完全关闭事件
     dialogClosed() {
-      this.$refs['quartz'].resetFields();
+      this.$refs['systemQuartz'].resetFields();
     },
     changeStatus(id, status) {
       this.$api
-        .post("/system/quartz/changeStatus", {
+        .post("/system/systemQuartz/changeStatus", {
             id: id,
             status: status
         })

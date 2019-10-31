@@ -1,7 +1,7 @@
 package cn.caojiantao.husky.starter.interceptor;
 
 import cn.caojiantao.husky.system.LoginContext;
-import cn.caojiantao.husky.system.model.security.User;
+import cn.caojiantao.husky.system.model.security.SystemUser;
 import cn.caojiantao.husky.system.service.UserService;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.api.R;
@@ -36,8 +36,8 @@ public class AuthInterceptor implements HandlerInterceptor {
             response.getWriter().write(JSON.toJSONString(R.failed("用户未登录")));
             return false;
         } else {
-            User curUser = userService.getById(userId);
-            LoginContext.setUser(curUser);
+            SystemUser curSystemUser = userService.getById(userId);
+            LoginContext.setUser(curSystemUser);
             return true;
         }
     }

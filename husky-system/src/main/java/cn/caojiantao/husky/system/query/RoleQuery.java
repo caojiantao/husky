@@ -1,6 +1,6 @@
 package cn.caojiantao.husky.system.query;
 
-import cn.caojiantao.husky.system.model.security.Role;
+import cn.caojiantao.husky.system.model.security.SystemRole;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class RoleQuery extends Page<Role> {
+public class RoleQuery extends Page<SystemRole> {
 
     private String name;
 }

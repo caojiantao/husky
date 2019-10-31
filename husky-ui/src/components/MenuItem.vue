@@ -1,21 +1,21 @@
 <template>
-  <el-submenu v-if="menu.children && menu.children.length > 0" :index="menu.name">
+  <el-submenu v-if="systemMenu.children && systemMenu.children.length > 0" :index="systemMenu.name">
     <template slot="title">
-      <i :class="menu.iconClass"/>
-      {{menu.name}}
+      <i :class="systemMenu.iconClass"/>
+      {{systemMenu.name}}
     </template>
-    <menu-item v-for="subMenu in menu.children" :key="subMenu.id" :menu="subMenu"/>
+    <systemMenu-item v-for="subMenu in systemMenu.children" :key="subMenu.id" :systemMenu="subMenu"/>
   </el-submenu>
 
-  <el-menu-item v-else :index="menu.href">
-    <i :class="menu.iconClass"/>
-    {{menu.name}}
-  </el-menu-item>
+  <el-systemMenu-item v-else :index="systemMenu.href">
+    <i :class="systemMenu.iconClass"/>
+    {{systemMenu.name}}
+  </el-systemMenu-item>
 </template>
 
 <script>
 export default {
   name: "MenuItem",
-  props: ["menu"]
+  props: ["systemMenu"]
 };
 </script>

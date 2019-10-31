@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -19,7 +18,6 @@ import java.util.Arrays;
 
 /**
  * @author caojiantao
- * @date 2018-10-24 16:03:06
  */
 @Configuration
 public class MyWebConfig implements WebMvcConfigurer {
@@ -47,8 +45,9 @@ public class MyWebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns(Arrays.asList("/", "/css/**", "/fonts/**", "/img/**", "/js/**", "/index.html"))
-                .excludePathPatterns("/system/security/user/login");
+                .excludePathPatterns("/system/security/user/login")
+                .excludePathPatterns("/", "/css/**", "/fonts/**", "/img/**", "/js/**", "/index.html")
+                .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html");
     }
 
     /**
@@ -64,6 +63,6 @@ public class MyWebConfig implements WebMvcConfigurer {
                 SerializerFeature.WriteMapNullValue
         );
         fastConverter.setFastJsonConfig(fastJsonConfig);
-        return new HttpMessageConverters((HttpMessageConverter<?>) fastConverter);
+        return new HttpMessageConverters(fastConverter);
     }
 }

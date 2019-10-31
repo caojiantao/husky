@@ -1,37 +1,34 @@
 package cn.caojiantao.husky.starter.component;
 
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.api.R;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.HandlerExceptionResolver;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import org.springframework.validation.BindException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
  * @author caojiantao
  * @date 2018-10-24 15:58:37
- * @description
  */
 @Slf4j
-@Component
-public class GlobalExceptionHandler implements HandlerExceptionResolver {
+@RestControllerAdvice
+public class GlobalExceptionHandler {
 
-    @Override
-    public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object o, Exception ex) {
-        log.error("全局异常捕获：", ex);
-        try {
-            response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-            String res = JSON.toJSONString(R.failed("服务器异常"));
-            response.getWriter().write(res);
-        } catch (IOException e) {
-            log.error("写入response发生异常：", e);
+    @ExceptionHandler(value = {MethodArgumentNotValidException.class, BindException.class})
+    public R handleBindException(Exception e) {
+        log.error("入参校验异常：", e);
+        if (e instanceof BindException) {
+            return R.failed(((BindException) e).getFieldError().getDefaultMessage());
+        } else if (e instanceof MethodArgumentNotValidException) {
+            return R.failed(((MethodArgumentNotValidException) e).getBindingResult().getFieldError().getDefaultMessage());
         }
-        return new ModelAndView();
+        return R.failed("未知异常");
+    }
 
+    @ExceptionHandler(Exception.class)
+    public R handleException(Exception e) {
+        log.error("全局异常捕获：", e);
+        return R.failed(e.getMessage());
     }
 }

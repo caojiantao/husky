@@ -14,7 +14,7 @@
 
     <Pagination
       ref="husky-pagination"
-      url="/system/security/role/getRoleByPage"
+      url="/system/security/systemRole/getRoleByPage"
       :query="query"
       :columns="columns"
     >
@@ -31,7 +31,7 @@
     >
       <el-row>
         <el-col :span="12">
-          <el-form :model="dialogModel.form" ref="role" label-width="80px">
+          <el-form :model="dialogModel.form" ref="systemRole" label-width="80px">
             <el-form-item label="名称">
               <el-input v-model="dialogModel.form.name"></el-input>
             </el-form-item>
@@ -83,15 +83,15 @@ export default {
         children: "children"
       },
       dialogModel: this.getInitDialogModel(),
-      menus: []
+      systemMenus: []
     };
   },
   created: function() {
     // 加载所有菜单树
     this.$api
-      .get("/system/security/menu/getAllMenus")
-      .then(menus => {
-        this.menus = menus;
+      .get("/system/security/systemMenu/getAllMenus")
+      .then(systemMenus => {
+        this.systemMenus = systemMenus;
       })
       .catch(() => {});
   },
@@ -120,7 +120,7 @@ export default {
     editRole(item) {
       // 首先获取角色基本信息
       this.$api
-        .get("/system/security/role/getRoleWithMenusById?id=" + item.id)
+        .get("/system/security/systemRole/getRoleWithMenusById?id=" + item.id)
         .then(data => {
           // 展示对话框
           this.dialogModel = {
@@ -131,9 +131,9 @@ export default {
           // 注意放在对话框展示的后面，并且采用下属写法避免undefined
           this.$nextTick(() => {
             let checkedKeys = [];
-            if (data.menus) {
-              data.menus.forEach(menu => {
-                checkedKeys.push(menu.id);
+            if (data.systemMenus) {
+              data.systemMenus.forEach(systemMenu => {
+                checkedKeys.push(systemMenu.id);
               });
             }
             // 注意只能选中叶子节点
@@ -155,7 +155,7 @@ export default {
       })
         .then(() => {
           this.$api
-            .post("/system/security/role/deleteRoleById", {
+            .post("/system/security/systemRole/deleteRoleById", {
               id: item.id
             })
             .then(() => {
@@ -166,21 +166,21 @@ export default {
         .catch(() => {});
     },
     submitForm() {
-      this.$refs["role"].validate(valid => {
+      this.$refs["systemRole"].validate(valid => {
         if (valid) {
           let $tree = this.$refs.tree;
           let menuIds = $tree
             .getCheckedKeys()
             .concat($tree.getHalfCheckedKeys());
-          let menus = [];
+          let systemMenus = [];
           menuIds.forEach(id =>
-            menus.push({
+            systemMenus.push({
               id: id
             })
           );
-          this.dialogModel.form["menus"] = menus;
+          this.dialogModel.form["systemMenus"] = systemMenus;
           this.$api
-            .post("/system/security/role/saveRole", this.dialogModel.form)
+            .post("/system/security/systemRole/saveRole", this.dialogModel.form)
             .then(() => {
               this.dialogModel.visible = false;
               this.search();
@@ -205,16 +205,16 @@ export default {
   },
   computed: {
     treeData: function() {
-      let treeData = getTreeData(this.menus);
+      let treeData = getTreeData(this.systemMenus);
       if (treeData.length === 0) {
         treeData.push({});
       }
       return treeData;
     },
-    // parentId -> menu 映射
+    // parentId -> systemMenu 映射
     menuMap: function() {
       let obj = {};
-      this.menus.forEach(node => {
+      this.systemMenus.forEach(node => {
         // 注意地址引用
         if (!obj[node.parentId]) {
           obj[node.parentId] = [];
