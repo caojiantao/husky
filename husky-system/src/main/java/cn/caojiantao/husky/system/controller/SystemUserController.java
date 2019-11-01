@@ -5,7 +5,6 @@ import cn.caojiantao.husky.system.dto.SystemUserDTO;
 import cn.caojiantao.husky.system.model.security.SystemUser;
 import cn.caojiantao.husky.system.query.UserQuery;
 import cn.caojiantao.husky.system.service.UserService;
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.api.ApiController;
@@ -33,12 +32,15 @@ public class SystemUserController extends ApiController {
     public R login(@Valid @RequestBody SystemUser systemUser) {
         String username = systemUser.getUsername();
         String password = systemUser.getPassword();
-        SystemUser loginSystemUser = userService.login(username, password);
-        if (loginSystemUser != null) {
-            JSONObject result = new JSONObject();
-            result.put("token", userService.generateToken(loginSystemUser.getId()));
-            result.put("user", loginSystemUser);
-            return success(result);
+        SystemUser loginUser = userService.login(username, password);
+        if (loginUser != null) {
+            try {
+                String token = userService.generateToken(loginUser.getId());
+                return success(token);
+            } catch (Exception e) {
+                logger.error("", e);
+                return failed("登录异常，请稍后重试");
+            }
         } else {
             return failed("用户名或密码错误");
         }

@@ -1,5 +1,6 @@
 package cn.caojiantao.husky.system.service;
 
+import cn.caojiantao.husky.system.configuration.TokenConfig;
 import cn.caojiantao.husky.system.dto.SystemRoleDTO;
 import cn.caojiantao.husky.system.dto.SystemUserDTO;
 import cn.caojiantao.husky.system.mapper.security.SystemUserMapper;
@@ -35,16 +36,15 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserService extends ServiceImpl<SystemUserMapper, SystemUser> {
 
+    private final TokenConfig tokenConfig;
     private final SystemUserMapper systemUserMapper;
     private final SystemUserRoleMapper systemUserRoleMapper;
 
-    private String secret = "secret";
-    private long expire = 7 * 24 * 60 * 60 * 1000;
-
     @Autowired
-    public UserService(SystemUserMapper systemUserMapper, SystemUserRoleMapper systemUserRoleMapper) {
+    public UserService(SystemUserMapper systemUserMapper, SystemUserRoleMapper systemUserRoleMapper, TokenConfig tokenConfig) {
         this.systemUserMapper = systemUserMapper;
         this.systemUserRoleMapper = systemUserRoleMapper;
+        this.tokenConfig = tokenConfig;
     }
 
     public SystemUser login(String username, String password) {
@@ -54,36 +54,22 @@ public class UserService extends ServiceImpl<SystemUserMapper, SystemUser> {
     /**
      * 生成token（注意注意：key为exp必须为非负数！！！）
      */
-    public String generateToken(int userId) {
-        String token = "";
-        try {
-            Algorithm algorithm = Algorithm.HMAC256(secret);
-            token = JWT.create()
-                    .withIssuer("auth0")
-                    .withClaim("userId", userId)
-                    .withExpiresAt(new Date(System.currentTimeMillis() + expire))
-                    .sign(algorithm);
-        } catch (Exception e) {
-            log.error("生成token报错：", e);
-        }
-        return token;
+    public String generateToken(int userId) throws UnsupportedEncodingException {
+        Algorithm algorithm = Algorithm.HMAC256(tokenConfig.getSecret());
+        return JWT.create()
+                .withIssuer("auth0")
+                .withClaim("userId", userId)
+                .withExpiresAt(new Date(System.currentTimeMillis() + tokenConfig.getExpired()))
+                .sign(algorithm);
     }
 
-    public int parseToken(String token) {
-        int userId = 0;
-        if (!Strings.isNullOrEmpty(token)) {
-            try {
-                Algorithm algorithm = Algorithm.HMAC256(secret);
-                JWTVerifier verifier = JWT.require(algorithm)
-                        .withIssuer("auth0")
-                        .build();
-                DecodedJWT jwt = verifier.verify(token);
-                userId = jwt.getClaim("userId").asInt();
-            } catch (JWTVerificationException | UnsupportedEncodingException e) {
-                log.error("解析token报错：", e);
-            }
-        }
-        return userId;
+    public int parseToken(String token) throws UnsupportedEncodingException, JWTVerificationException {
+        Algorithm algorithm = Algorithm.HMAC256(tokenConfig.getSecret());
+        JWTVerifier verifier = JWT.require(algorithm)
+                .withIssuer("auth0")
+                .build();
+        DecodedJWT jwt = verifier.verify(token);
+        return jwt.getClaim("userId").asInt();
     }
 
     @Transactional(rollbackFor = Exception.class)

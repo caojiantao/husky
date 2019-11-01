@@ -4,9 +4,11 @@ import cn.caojiantao.husky.system.model.security.SystemMenu;
 import cn.caojiantao.husky.system.service.SystemMenuService;
 import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.baomidou.mybatisplus.extension.api.R;
+import com.baomidou.mybatisplus.extension.enums.ApiErrorCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 
 /**
@@ -28,13 +30,13 @@ public class SystemMenuController extends ApiController {
         return success(systemMenuService.getMenuListAsTree());
     }
 
-    @GetMapping("/getMenuById")
-    public R getMenuById(Integer id) {
-        return success(systemMenuService.getById(id));
+    @GetMapping("/getPersonalMenuListAsTree")
+    public R getPersonalMenuListAsTree() {
+        return success(systemMenuService.getPersonalMenuListAsTree());
     }
 
     @PostMapping("/saveMenu")
-    public R saveMenu(@RequestBody SystemMenu systemMenu) {
+    public R saveMenu(@Valid @RequestBody SystemMenu systemMenu) {
         boolean operate;
         if (systemMenu.getId() == null || systemMenu.getId() == 0) {
             systemMenu.setGmtCreate(LocalDateTime.now());
@@ -43,16 +45,11 @@ public class SystemMenuController extends ApiController {
             systemMenu.setGmtModified(LocalDateTime.now());
             operate = systemMenuService.updateById(systemMenu);
         }
-        return operate ? success(null) : failed("保存失败");
+        return operate ? success(null) : failed(ApiErrorCode.FAILED);
     }
 
     @PostMapping("/deleteMenuById")
     public R deleteMenuById(@RequestBody SystemMenu systemMenu) {
-        return systemMenuService.removeById(systemMenu.getId()) ? success(null) : failed("删除失败");
-    }
-
-    @GetMapping("/getMenusByUserId")
-    public R getMenusByUserId(int userId) {
-        return success(systemMenuService.getMenusByUserId(userId));
+        return systemMenuService.deleteByMenuId(systemMenu.getId()) ? success(null) : failed(ApiErrorCode.FAILED);
     }
 }

@@ -1,10 +1,12 @@
 package cn.caojiantao.husky.system.service;
 
+import cn.caojiantao.husky.system.LoginContext;
 import cn.caojiantao.husky.system.dto.security.SystemMenuDTO;
 import cn.caojiantao.husky.system.mapper.security.SystemMenuMapper;
 import cn.caojiantao.husky.system.mapper.security.SystemRoleMenuMapper;
 import cn.caojiantao.husky.system.model.security.SystemMenu;
 import cn.caojiantao.husky.system.model.security.SystemRoleMenu;
+import cn.caojiantao.husky.system.model.security.SystemUser;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -34,12 +36,8 @@ public class SystemMenuService extends ServiceImpl<SystemMenuMapper, SystemMenu>
         this.systemRoleMenuMapper = systemRoleMenuMapper;
     }
 
-    public List<SystemMenu> getMenusByUserId(int userId) {
-        return systemMenuMapper.getMenusByUserId(userId);
-    }
-
     @Transactional(rollbackFor = Exception.class)
-    public boolean removeById(int id) {
+    public boolean deleteByMenuId(int id) {
         SystemRoleMenu systemRoleMenu = new SystemRoleMenu();
         systemRoleMenu.setMenuId(id);
         Wrapper<SystemRoleMenu> wrapper = Wrappers.query(systemRoleMenu);
@@ -47,13 +45,23 @@ public class SystemMenuService extends ServiceImpl<SystemMenuMapper, SystemMenu>
         return systemMenuMapper.deleteById(id) > 0;
     }
 
+    public List<SystemMenuDTO> getPersonalMenuListAsTree() {
+        SystemUser user = LoginContext.getUser();
+        List<SystemMenu> systemMenuList = systemMenuMapper.getMenuListByUserId(user.getId());
+        return formatSystemMenu(systemMenuList);
+    }
+
     public List<SystemMenuDTO> getMenuListAsTree() {
         // 顺序查询所有菜单
         QueryWrapper<SystemMenu> wrapper = Wrappers.query();
         wrapper.orderByDesc("weight");
         List<SystemMenu> systemMenuList = list(wrapper);
+        return formatSystemMenu(systemMenuList);
+    }
+
+    private List<SystemMenuDTO> formatSystemMenu(List<SystemMenu> menuList) {
         LinkedMultiValueMap<Integer, SystemMenu> menuMultiValueMap = new LinkedMultiValueMap<>();
-        systemMenuList.forEach(menu -> menuMultiValueMap.add(menu.getParentId(), menu));
+        menuList.forEach(menu -> menuMultiValueMap.add(menu.getParentId(), menu));
         SystemMenuDTO root = new SystemMenuDTO();
         root.setId(0);
         initChildren(root, menuMultiValueMap);

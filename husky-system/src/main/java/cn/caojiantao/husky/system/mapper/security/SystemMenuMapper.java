@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface SystemMenuMapper extends BaseMapper<SystemMenu> {
 
-    List<SystemMenu> getMenusByUserId(int userId);
+    List<SystemMenu> getMenuListByUserId(int userId);
 
-    List<SystemMenu> getMenusByRoleId(int roleId);
+    List<SystemMenu> getMenuListByRoleId(int roleId);
 }

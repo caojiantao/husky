@@ -1,0 +1,5 @@
+system:
+  token:
+    key: X-Token
+    secret: secret
+    expired: 604800000

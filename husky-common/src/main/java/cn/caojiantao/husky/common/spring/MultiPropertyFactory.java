@@ -1,4 +1,4 @@
-package cn.caojiantao.husky.starter;
+package cn.caojiantao.husky.common.spring;
 
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.core.env.PropertiesPropertySource;
@@ -12,7 +12,7 @@ import java.util.Properties;
 /**
  * @author caojiantao
  */
-public class PropertyFactory extends DefaultPropertySourceFactory {
+public class MultiPropertyFactory extends DefaultPropertySourceFactory {
 
     @Override
     public PropertySource<?> createPropertySource(String name, EncodedResource resource) throws IOException {

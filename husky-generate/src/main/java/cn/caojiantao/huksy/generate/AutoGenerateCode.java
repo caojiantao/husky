@@ -46,7 +46,7 @@ public class AutoGenerateCode {
 
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
-        String projectPath = "D:\\workspace\\husky\\husky-resource";
+        String projectPath = "D:\\workspace\\husky\\test";
         gc.setOutputDir(projectPath + "/src/main/java");
         gc.setAuthor("caojiantao");
         gc.setOpen(false);
@@ -54,11 +54,11 @@ public class AutoGenerateCode {
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://94.191.46.132:3306/husky?useSSL=false&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true");
+        dsc.setUrl("jdbc:mysql://127.0.0.1:3306/husky?useSSL=false&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true");
         // dsc.setSchemaName("public");
         dsc.setDriverName("com.mysql.jdbc.Driver");
-        dsc.setUsername("caojiantao");
-        dsc.setPassword("cjt122208206202.");
+        dsc.setUsername("root");
+        dsc.setPassword("123456");
         mpg.setDataSource(dsc);
 
         // 包配置
