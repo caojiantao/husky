@@ -43,7 +43,7 @@ public class SystemRoleService extends ServiceImpl<SystemRoleMapper, SystemRole>
         } else {
             SystemRoleDTO dto = new SystemRoleDTO();
             BeanUtils.copyProperties(systemRole, dto);
-            List<SystemMenu> systemMenus = systemMenuMapper.getMenusByRoleId(id);
+            List<SystemMenu> systemMenus = systemMenuMapper.getMenuListByRoleId(id);
             dto.setSystemMenus(systemMenus);
             return dto;
         }
