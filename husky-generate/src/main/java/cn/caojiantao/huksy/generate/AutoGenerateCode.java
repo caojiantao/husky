@@ -46,7 +46,7 @@ public class AutoGenerateCode {
 
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
-        String projectPath = "D:\\workspace\\husky\\test";
+        String projectPath = "D:\\workspace\\husky\\husky-system";
         gc.setOutputDir(projectPath + "/src/main/java");
         gc.setAuthor("caojiantao");
         gc.setOpen(false);
@@ -111,14 +111,16 @@ public class AutoGenerateCode {
         StrategyConfig strategy = new StrategyConfig();
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
-        strategy.setSuperEntityClass("BaseModel");
+        // 实体
+        strategy.setEntityTableFieldAnnotationEnable(true);
+        strategy.setSuperEntityClass("cn.caojiantao.husky.common.base.BaseModel");
+        strategy.setSuperEntityColumns("id", "gmtCreate", "gmtModified");
         strategy.setEntityLombokModel(true);
+        // controller
         strategy.setRestControllerStyle(true);
+        strategy.setControllerMappingHyphenStyle(true);
         strategy.setSuperControllerClass("com.baomidou.mybatisplus.extension.api.ApiController");
         strategy.setInclude(scanner("表名"));
-        strategy.setSuperEntityColumns("id");
-        strategy.setControllerMappingHyphenStyle(true);
-        strategy.setTablePrefix(pc.getModuleName() + "_");
         mpg.setStrategy(strategy);
         mpg.setTemplateEngine(new FreemarkerTemplateEngine());
         mpg.execute();

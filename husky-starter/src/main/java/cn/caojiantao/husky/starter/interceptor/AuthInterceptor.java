@@ -34,7 +34,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
         String tokenStr = request.getHeader(tokenConfig.getKey());
-        String info;
+        String message;
         try {
             int userId = userService.parseToken(tokenStr);
             // 设置当前用户信息
@@ -42,12 +42,12 @@ public class AuthInterceptor implements HandlerInterceptor {
             LoginContext.setUser(curSystemUser);
             return true;
         } catch (TokenExpiredException e) {
-            info = "用户凭证已过期";
+            message = "用户凭证已过期";
         } catch (Exception e) {
-            info = "未知异常";
+            message = "未知异常";
         }
         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-        response.getWriter().write(JSON.toJSONString(R.failed(info)));
+        response.getWriter().write(JSON.toJSONString(R.failed(message)));
         return false;
     }
 }
