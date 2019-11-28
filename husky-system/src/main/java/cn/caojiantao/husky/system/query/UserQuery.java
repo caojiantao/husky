@@ -1,6 +1,6 @@
 package cn.caojiantao.husky.system.query;
 
-import cn.caojiantao.husky.system.entity.security.SystemUser;
+import cn.caojiantao.husky.system.entity.User;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class UserQuery extends Page<SystemUser> {
+public class UserQuery extends Page<User> {
 
     private Integer id;
     private String username;

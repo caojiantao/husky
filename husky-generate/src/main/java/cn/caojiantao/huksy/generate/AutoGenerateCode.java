@@ -1,5 +1,6 @@
 package cn.caojiantao.huksy.generate;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
@@ -49,10 +50,12 @@ public class AutoGenerateCode {
         String projectPath = "D:\\workspace\\husky\\husky-system";
         gc.setOutputDir(projectPath + "/src/main/java");
         gc.setAuthor("caojiantao");
-        gc.setOpen(false);
         gc.setSwagger2(true);
-        mpg.setGlobalConfig(gc);
         gc.setFileOverride(true);
+        gc.setBaseResultMap(true);
+        gc.setOpen(false);
+        gc.setIdType(IdType.AUTO);
+        mpg.setGlobalConfig(gc);
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
@@ -117,7 +120,8 @@ public class AutoGenerateCode {
         strategy.setRestControllerStyle(true);
         strategy.setEntityTableFieldAnnotationEnable(true);
         // 公共父类
-        strategy.setSuperControllerClass("cn.caojiantao.husky.common.base.BaseEntity");
+        strategy.setSuperControllerClass("com.baomidou.mybatisplus.extension.api.ApiController");
+        strategy.setSuperEntityClass("cn.caojiantao.husky.common.base.BaseEntity");
         // 写于父类中的公共字段
         strategy.setSuperEntityColumns("id", "gmtCreate", "gmtModified");
         strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));

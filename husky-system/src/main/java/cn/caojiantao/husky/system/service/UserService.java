@@ -1,12 +1,12 @@
 package cn.caojiantao.husky.system.service;
 
 import cn.caojiantao.husky.system.configuration.TokenConfig;
-import cn.caojiantao.husky.system.dto.SystemRoleDTO;
-import cn.caojiantao.husky.system.dto.SystemUserDTO;
-import cn.caojiantao.husky.system.mapper.security.SystemUserMapper;
-import cn.caojiantao.husky.system.mapper.security.SystemUserRoleMapper;
-import cn.caojiantao.husky.system.entity.security.SystemUser;
-import cn.caojiantao.husky.system.entity.security.SystemUserRole;
+import cn.caojiantao.husky.system.dto.RoleDTO;
+import cn.caojiantao.husky.system.dto.UserDTO;
+import cn.caojiantao.husky.system.entity.User;
+import cn.caojiantao.husky.system.mapper.UserMapper;
+import cn.caojiantao.husky.system.mapper.UserRoleMapper;
+import cn.caojiantao.husky.system.entity.UserRole;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -34,21 +34,21 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
-public class UserService extends ServiceImpl<SystemUserMapper, SystemUser> {
+public class UserService extends ServiceImpl<UserMapper, User> {
 
     private final TokenConfig tokenConfig;
-    private final SystemUserMapper systemUserMapper;
-    private final SystemUserRoleMapper systemUserRoleMapper;
+    private final UserMapper userMapper;
+    private final UserRoleMapper userRoleMapper;
 
     @Autowired
-    public UserService(SystemUserMapper systemUserMapper, SystemUserRoleMapper systemUserRoleMapper, TokenConfig tokenConfig) {
-        this.systemUserMapper = systemUserMapper;
-        this.systemUserRoleMapper = systemUserRoleMapper;
+    public UserService(UserMapper userMapper, UserRoleMapper userRoleMapper, TokenConfig tokenConfig) {
+        this.userMapper = userMapper;
+        this.userRoleMapper = userRoleMapper;
         this.tokenConfig = tokenConfig;
     }
 
-    public SystemUser login(String username, String password) {
-        return systemUserMapper.getUserByUsernameAndPassword(username, encryptPassword(password));
+    public User login(String username, String password) {
+        return userMapper.getUserByUsernameAndPassword(username, encryptPassword(password));
     }
 
     /**
@@ -73,43 +73,43 @@ public class UserService extends ServiceImpl<SystemUserMapper, SystemUser> {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public boolean save(SystemUserDTO userDTO) {
+    public boolean save(UserDTO userDTO) {
         userDTO.setPassword(encryptPassword(userDTO.getPassword()));
-        SystemUser systemUser = new SystemUser();
-        BeanUtils.copyProperties(userDTO, systemUser);
-        systemUser.setGmtCreate(LocalDateTime.now());
-        systemUserMapper.insert(systemUser);
-        initUserRole(systemUser.getId(), userDTO.getRoleDTOS());
-        return systemUser.getId() > 0;
+        User user = new User();
+        BeanUtils.copyProperties(userDTO, user);
+        user.setGmtCreate(LocalDateTime.now());
+        userMapper.insert(user);
+        initUserRole(user.getId(), userDTO.getRoleDTOS());
+        return user.getId() > 0;
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public boolean updateUser(SystemUserDTO userDTO) {
+    public boolean updateUser(UserDTO userDTO) {
         userDTO.setPassword(encryptPassword(userDTO.getPassword()));
-        SystemUser systemUser = new SystemUser();
-        BeanUtils.copyProperties(userDTO, systemUser);
-        systemUser.setGmtModified(LocalDateTime.now());
-        initUserRole(systemUser.getId(), userDTO.getRoleDTOS());
-        return systemUserMapper.updateById(systemUser) > 0;
+        User user = new User();
+        BeanUtils.copyProperties(userDTO, user);
+        user.setGmtModified(LocalDateTime.now());
+        initUserRole(user.getId(), userDTO.getRoleDTOS());
+        return userMapper.updateById(user) > 0;
     }
 
     @Transactional(rollbackFor = Exception.class)
     public boolean removeById(int id) {
-        systemUserRoleMapper.deleteByUserId(id);
-        return systemUserMapper.deleteById(id) > 0;
+        userRoleMapper.deleteByUserId(id);
+        return userMapper.deleteById(id) > 0;
     }
 
-    public SystemUserDTO getUserWithRolesById(int id) {
-        SystemUser systemUser = systemUserMapper.selectById(id);
-        if (systemUser == null) {
+    public UserDTO getUserWithRolesById(int id) {
+        User user = userMapper.selectById(id);
+        if (user == null) {
             return null;
         } else {
-            SystemUserDTO userDTO = new SystemUserDTO();
-            BeanUtils.copyProperties(systemUser, userDTO);
-            List<Integer> roleIds = systemUserRoleMapper.getRoleIdsByUserId(id);
+            UserDTO userDTO = new UserDTO();
+            BeanUtils.copyProperties(user, userDTO);
+            List<Integer> roleIds = userRoleMapper.getRoleIdsByUserId(id);
             if (!CollectionUtils.isEmpty(roleIds)) {
-                List<SystemRoleDTO> roleDTOS = roleIds.stream().map(roleId -> {
-                    SystemRoleDTO roleDTO = new SystemRoleDTO();
+                List<RoleDTO> roleDTOS = roleIds.stream().map(roleId -> {
+                    RoleDTO roleDTO = new RoleDTO();
                     roleDTO.setId(roleId);
                     return roleDTO;
                 }).collect(Collectors.toList());
@@ -129,12 +129,12 @@ public class UserService extends ServiceImpl<SystemUserMapper, SystemUser> {
         return DigestUtils.md5DigestAsHex(password.getBytes(StandardCharsets.UTF_8));
     }
 
-    private void initUserRole(Integer userId, List<SystemRoleDTO> roleDTOS) {
+    private void initUserRole(Integer userId, List<RoleDTO> roleDTOS) {
         if (userId != null && userId > 0) {
-            systemUserRoleMapper.deleteByUserId(userId);
+            userRoleMapper.deleteByUserId(userId);
             if (!CollectionUtils.isEmpty(roleDTOS)) {
-                List<SystemUserRole> systemUserRoles = roleDTOS.stream().map(roleDTO -> new SystemUserRole(userId, roleDTO.getId())).collect(Collectors.toList());
-                systemUserRoleMapper.addUserRoles(systemUserRoles);
+                List<UserRole> userRoles = roleDTOS.stream().map(roleDTO -> new UserRole(userId, roleDTO.getId())).collect(Collectors.toList());
+                userRoleMapper.addUserRoles(userRoles);
             }
         }
     }

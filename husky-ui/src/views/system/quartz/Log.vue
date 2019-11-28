@@ -2,7 +2,7 @@
   <div>
     <Pagination
       ref="husky-pagination"
-      url="/system/systemQuartz/getQuartzLogByPage"
+      url="/system/quartz/getQuartzLogByPage"
       :query="query"
       :columns="columns"
     >

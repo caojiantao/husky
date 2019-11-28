@@ -1,14 +1,17 @@
-package cn.caojiantao.husky.system.query;
+package cn.caojiantao.husky.system.dto;
 
 import cn.caojiantao.husky.system.entity.Menu;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.List;
 
 /**
  * @author caojiantao
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class MenuQuery extends Page<Menu> {
+public class MenuDTO extends Menu {
+
+    private List<MenuDTO> children;
 }

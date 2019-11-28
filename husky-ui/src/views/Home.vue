@@ -3,13 +3,13 @@
     <el-container>
       <el-header class="home-header">
         <strong>Husky</strong>
-        <div class="systemUser-info">
+        <div class="user-info">
           <span class="nickname">{{userInfo.nickname}}</span>
           <span class="logout" @click="logout">退出</span>
         </div>
       </el-header>
       <el-container>
-        <nav-systemMenu class="home-aside"/>
+        <nav-menu class="home-aside"/>
         <el-main>
           <Breadcrumb/>
           <router-view style="margin-top:20px;"/>
@@ -30,15 +30,15 @@ body {
   line-height: 60px;
 }
 
-.home-header .systemUser-info {
+.home-header .user-info {
   float: right;
 }
 
-.home-header .systemUser-info span {
+.home-header .user-info span {
   margin-left: 20px;
 }
 
-.home-header .systemUser-info .logout {
+.home-header .user-info .logout {
   cursor: pointer;
 }
 
@@ -70,9 +70,9 @@ export default {
     };
   },
   created () {
-    let systemUser = this.$store.state.systemUser;
-    if (systemUser) {
-      this.userInfo = systemUser;
+    let user = this.$store.state.user;
+    if (user) {
+      this.userInfo = user;
     }
   },
   methods: {

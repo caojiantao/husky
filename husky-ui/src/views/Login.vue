@@ -29,13 +29,13 @@ export default {
   methods: {
     submitForm: function() {
       this.$api
-        .post("/system/security/systemUser/login", this.loginModel)
+        .post("/system/security/user/login", this.loginModel)
         .then(data => {
           let token = data.token;
-          let systemUser = data.systemUser;
+          let user = data.user;
           // 保存用户登录凭据
           saveToken(token);
-          this.$store.commit("setUser", systemUser);
+          this.$store.commit("setUser", user);
           // 地址跳转（重定向避免动态路由重复加载）
           window.location.href = "/";
         })

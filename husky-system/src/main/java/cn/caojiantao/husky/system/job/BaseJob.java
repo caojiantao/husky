@@ -1,10 +1,10 @@
 package cn.caojiantao.husky.system.job;
 
 import cn.caojiantao.husky.system.QuartzJobManager;
-import cn.caojiantao.husky.system.entity.quartz.SystemQuartz;
-import cn.caojiantao.husky.system.entity.quartz.SystemQuartzLog;
-import cn.caojiantao.husky.system.service.SystemQuartzLogService;
-import cn.caojiantao.husky.system.service.SystemQuartzService;
+import cn.caojiantao.husky.system.entity.Quartz;
+import cn.caojiantao.husky.system.entity.QuartzLog;
+import cn.caojiantao.husky.system.service.QuartzLogService;
+import cn.caojiantao.husky.system.service.QuartzService;
 import cn.caojiantao.husky.common.base.RedisLock;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.CronExpression;
@@ -27,9 +27,9 @@ import java.util.concurrent.TimeUnit;
 public abstract class BaseJob implements Job {
 
     @Autowired
-    private SystemQuartzService systemQuartzService;
+    private QuartzService quartzService;
     @Autowired
-    private SystemQuartzLogService systemQuartzLogService;
+    private QuartzLogService quartzLogService;
     @Autowired
     private QuartzJobManager manager;
     @Autowired
@@ -38,21 +38,21 @@ public abstract class BaseJob implements Job {
     @Override
     public void execute(JobExecutionContext context) {
         int id = context.getJobDetail().getJobDataMap().getIntValue("id");
-        SystemQuartz systemQuartz = systemQuartzService.getById(id);
-        if (systemQuartz == null) {
+        Quartz quartz = quartzService.getById(id);
+        if (quartz == null) {
             log.error(context.getJobDetail().getJobClass() + "已被直接删除");
             manager.removeQuartz(context.getTrigger().getKey());
         } else {
             try {
-                if ((new CronExpression(systemQuartz.getCronExpression())).isSatisfiedBy(new Date())) {
+                if ((new CronExpression(quartz.getCronExpression())).isSatisfiedBy(new Date())) {
                     // 表达式与当前匹配
-                    executeUniqueQuartz(systemQuartz);
+                    executeUniqueQuartz(quartz);
                 } else {
-                    log.error("表达式[" + systemQuartz.getCronExpression() + "]与当前时间不匹配");
-                    manager.addJob(systemQuartz);
+                    log.error("表达式[" + quartz.getCronExpression() + "]与当前时间不匹配");
+                    manager.addJob(quartz);
                 }
             } catch (ParseException e) {
-                log.error("表达式[" + systemQuartz.getCronExpression() + "]解析错误");
+                log.error("表达式[" + quartz.getCronExpression() + "]解析错误");
                 manager.removeQuartz(context.getTrigger().getKey());
             }
         }
@@ -61,16 +61,16 @@ public abstract class BaseJob implements Job {
     /**
      * 分布式锁保证任务单一执行
      */
-    private void executeUniqueQuartz(SystemQuartz systemQuartz) {
-        String jobClass = systemQuartz.getJobClass();
+    private void executeUniqueQuartz(Quartz quartz) {
+        String jobClass = quartz.getJobClass();
         String requestId = UUID.randomUUID().toString();
         try {
             // 设置过期时间为1小时
             if (lock.tryLock(jobClass, requestId, 1, TimeUnit.HOURS)) {
                 log.info(jobClass + "开始执行...");
                 // 实际quartz执行逻辑
-                SystemQuartzLog log = new SystemQuartzLog();
-                log.setQuartzId(systemQuartz.getId());
+                QuartzLog log = new QuartzLog();
+                log.setQuartzId(quartz.getId());
                 LocalDateTime start = LocalDateTime.now();
                 log.setStartTime(start);
                 try {
@@ -83,7 +83,7 @@ public abstract class BaseJob implements Job {
                 }
                 LocalDateTime end = LocalDateTime.now();
                 log.setEndTime(end);
-                systemQuartzLogService.save(log);
+                quartzLogService.save(log);
             } else {
                 log.info(jobClass + "获取执行锁失败");
             }

@@ -14,7 +14,7 @@
 
     <Pagination
       ref="husky-pagination"
-      url="/system/security/systemUser/getUserByPage"
+      url="/system/security/user/getUserByPage"
       :query="query"
       :columns="columns"
     >
@@ -32,7 +32,7 @@
     >
       <el-row :gutter="20">
         <el-col :span="10">
-          <el-form :model="dialogModel.form" ref="systemUser" label-width="80px">
+          <el-form :model="dialogModel.form" ref="user" label-width="80px">
             <el-form-item label="用户名">
               <el-input v-model="dialogModel.form.username"></el-input>
             </el-form-item>
@@ -113,12 +113,12 @@ export default {
     editRow: function(row) {
       // 首先获取角色基本信息
       this.$api
-        .get("/system/security/systemUser/getUserWithRolesById?id=" + row.id)
-        .then(systemUser => {
+        .get("/system/security/user/getUserWithRolesById?id=" + row.id)
+        .then(user => {
           let roleIds = [];
           // 初始化选中的角色
-          if (systemUser.roleDTOS) {
-            systemUser.roleDTOS.forEach(roleDTO => {
+          if (user.roleDTOS) {
+            user.roleDTOS.forEach(roleDTO => {
               roleIds.push(roleDTO.id);
             });
           }
@@ -126,7 +126,7 @@ export default {
           this.dialogModel = {
             title: "编辑角色",
             visible: true,
-            form: systemUser,
+            form: user,
             roleIds: roleIds
           };
         });
@@ -139,7 +139,7 @@ export default {
       })
         .then(() => {
           this.$api
-            .post("/system/security/systemUser/deleteUserById", {
+            .post("/system/security/user/deleteUserById", {
               id: row.id
             })
             .then(() => {
@@ -150,15 +150,15 @@ export default {
         .catch(() => {});
     },
     submitForm() {
-      this.$refs["systemUser"].validate(valid => {
+      this.$refs["user"].validate(valid => {
         if (valid) {
-          let systemUser = this.dialogModel.form;
-          systemUser.roleDTOS = [];
+          let user = this.dialogModel.form;
+          user.roleDTOS = [];
           this.dialogModel.roleIds.forEach(roleId =>
-            systemUser.roleDTOS.push({ id: roleId })
+            user.roleDTOS.push({ id: roleId })
           );
           this.$api
-            .post("/system/security/systemUser/saveUser", systemUser)
+            .post("/system/security/user/saveUser", user)
             .then(() => {
               this.dialogModel.visible = false;
               this.search();
@@ -171,7 +171,7 @@ export default {
     },
     getAllRoles() {
       this.$api
-        .get("/system/security/systemRole/getAllRoles")
+        .get("/system/security/role/getAllRoles")
         .then(roles => {
           this.roles = roles;
         })

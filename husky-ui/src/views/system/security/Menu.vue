@@ -1,5 +1,5 @@
 <template>
-  <div class="husky-systemMenu">
+  <div class="husky-menu">
     <el-form inline>
       <el-form-item>
         <el-button @click="dialogModel.visible=true">添加顶级菜单</el-button>
@@ -17,7 +17,7 @@
     ></el-tree>
 
     <el-dialog :title="dialogModel.title" :visible.sync="dialogModel.visible">
-      <el-form :model="dialogModel.form" ref="systemMenu" label-width="80px">
+      <el-form :model="dialogModel.form" ref="menu" label-width="80px">
         <el-form-item label="路径">
           <el-input v-model="dialogModel.form.parentId" style="display:none;"></el-input>
           <el-input v-model="dialogModel.form.nodePath" disabled></el-input>
@@ -64,7 +64,7 @@ export default {
   },
   data() {
     return {
-      systemMenus: [],
+      menus: [],
       defaultProps: {
         id: "id",
         label: "name",
@@ -92,18 +92,18 @@ export default {
     },
     getMenus() {
       this.$api
-        .get("/system/security/systemMenu/getAllMenus")
-        .then(systemMenus => {
-          this.systemMenus = systemMenus;
+        .get("/system/security/menu/getAllMenus")
+        .then(menus => {
+          this.menus = menus;
         })
         .catch(() => {});
     },
     // 提交表单请求
     submitForm() {
-      this.$refs["systemMenu"].validate(valid => {
+      this.$refs["menu"].validate(valid => {
         if (valid) {
           this.$api
-            .post("/system/security/systemMenu/saveMenu", this.dialogModel.form)
+            .post("/system/security/menu/saveMenu", this.dialogModel.form)
             .then(() => {
               this.dialogModel.visible = false;
               this.getMenus();
@@ -143,16 +143,16 @@ export default {
             on: {
               click: () => {
                 this.$api
-                  .get("/system/security/systemMenu/getMenuById", {
+                  .get("/system/security/menu/getMenuById", {
                     params: {
                       id: data.id
                     }
                   })
-                  .then(systemMenu => {
+                  .then(menu => {
                     Object.assign(this.dialogModel, {
                       title: "编辑菜单",
                       visible: true,
-                      form: systemMenu
+                      form: menu
                     });
                     this.$set(
                       this.dialogModel.form,
@@ -196,7 +196,7 @@ export default {
     // 删除菜单
     removeMenu(id) {
       this.$api
-        .post("/system/security/systemMenu/deleteMenuById", {
+        .post("/system/security/menu/deleteMenuById", {
           id: id
         })
         .then(() => {
@@ -217,7 +217,7 @@ export default {
   computed: {
     // 计算菜单树数据，坑爹，el-tree必须有元素
     treeData: function() {
-      let nodes = getTreeData(this.systemMenus);
+      let nodes = getTreeData(this.menus);
       if (nodes.length === 0) {
         nodes.push({});
       }

@@ -1,8 +1,8 @@
 <template>
   <el-aside>
-    <el-systemMenu :default-active="activeIndex" router>
-      <systemMenu-item v-for="systemMenu in treeData" :key="systemMenu.id" :systemMenu="systemMenu"/>
-    </el-systemMenu>
+    <el-menu :default-active="activeIndex" router>
+      <menu-item v-for="menu in treeData" :key="menu.id" :menu="menu"/>
+    </el-menu>
   </el-aside>
 </template>
 
@@ -20,7 +20,7 @@ export default {
   computed: {
     // 计算菜单树数据，坑爹，el-tree必须有元素
     treeData: function() {
-      let nodes = getTreeData(this.$store.state.systemMenus);
+      let nodes = getTreeData(this.$store.state.menus);
       if (nodes.length === 0) {
         nodes.push({});
       }
