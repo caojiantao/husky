@@ -1,6 +1,6 @@
 package cn.caojiantao.husky.system.mapper.quartz;
 
-import cn.caojiantao.husky.system.model.quartz.SystemQuartzLog;
+import cn.caojiantao.husky.system.entity.quartz.SystemQuartzLog;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

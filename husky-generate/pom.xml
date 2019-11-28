@@ -35,5 +35,11 @@
             <artifactId>beetl</artifactId>
             <version>LATEST</version>
         </dependency>
+
+        <dependency>
+            <groupId>cn.caojiantao.husky</groupId>
+            <artifactId>husky-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>

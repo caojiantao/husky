@@ -2,7 +2,7 @@ package cn.caojiantao.husky.starter.interceptor;
 
 import cn.caojiantao.husky.system.LoginContext;
 import cn.caojiantao.husky.system.configuration.TokenConfig;
-import cn.caojiantao.husky.system.model.security.SystemUser;
+import cn.caojiantao.husky.system.entity.security.SystemUser;
 import cn.caojiantao.husky.system.service.UserService;
 import com.alibaba.fastjson.JSON;
 import com.auth0.jwt.exceptions.TokenExpiredException;

@@ -1,6 +1,6 @@
 package cn.caojiantao.husky.system.mapper.security;
 
-import cn.caojiantao.husky.system.model.security.SystemUser;
+import cn.caojiantao.husky.system.entity.security.SystemUser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 

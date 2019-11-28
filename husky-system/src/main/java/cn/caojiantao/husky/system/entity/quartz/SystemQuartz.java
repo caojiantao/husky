@@ -1,6 +1,6 @@
-package cn.caojiantao.husky.system.model.quartz;
+package cn.caojiantao.husky.system.entity.quartz;
 
-import cn.caojiantao.husky.common.base.BaseModel;
+import cn.caojiantao.husky.common.base.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @TableName("system_quartz")
 @EqualsAndHashCode(callSuper = false)
-public class SystemQuartz extends BaseModel {
+public class SystemQuartz extends BaseEntity {
 
     @TableField("`group`")
     private String group;

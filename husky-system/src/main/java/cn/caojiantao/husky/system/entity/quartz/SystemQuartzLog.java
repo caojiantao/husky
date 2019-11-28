@@ -1,6 +1,6 @@
-package cn.caojiantao.husky.system.model.quartz;
+package cn.caojiantao.husky.system.entity.quartz;
 
-import cn.caojiantao.husky.common.base.BaseModel;
+import cn.caojiantao.husky.common.base.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Data
 @TableName("system_quartz_log")
 @EqualsAndHashCode(callSuper = false)
-public class SystemQuartzLog extends BaseModel {
+public class SystemQuartzLog extends BaseEntity {
 
     private Integer quartzId;
     private Boolean status;

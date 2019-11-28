@@ -1,7 +1,7 @@
 package cn.caojiantao.husky.system.controller;
 
 import cn.caojiantao.husky.system.dto.SystemRoleDTO;
-import cn.caojiantao.husky.system.model.security.SystemRole;
+import cn.caojiantao.husky.system.entity.security.SystemRole;
 import cn.caojiantao.husky.system.query.RoleQuery;
 import cn.caojiantao.husky.system.service.SystemRoleService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;

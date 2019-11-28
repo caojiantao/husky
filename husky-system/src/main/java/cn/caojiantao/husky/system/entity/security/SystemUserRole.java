@@ -1,6 +1,6 @@
-package cn.caojiantao.husky.system.model.security;
+package cn.caojiantao.husky.system.entity.security;
 
-import cn.caojiantao.husky.common.base.BaseModel;
+import cn.caojiantao.husky.common.base.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,12 +11,12 @@ import lombok.NoArgsConstructor;
  * @author caojiantao
  */
 @Data
-@TableName("system_role_menu")
+@TableName("system_user_role")
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class SystemRoleMenu extends BaseModel{
+public class SystemUserRole extends BaseEntity {
 
+    private Integer userId;
     private Integer roleId;
-    private Integer menuId;
 }

@@ -1,6 +1,6 @@
 package cn.caojiantao.husky.system.mapper.security;
 
-import cn.caojiantao.husky.system.model.security.SystemUserRole;
+import cn.caojiantao.husky.system.entity.security.SystemUserRole;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 import java.util.List;

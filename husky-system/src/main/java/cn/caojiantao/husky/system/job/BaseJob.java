@@ -1,8 +1,8 @@
 package cn.caojiantao.husky.system.job;
 
 import cn.caojiantao.husky.system.QuartzJobManager;
-import cn.caojiantao.husky.system.model.quartz.SystemQuartz;
-import cn.caojiantao.husky.system.model.quartz.SystemQuartzLog;
+import cn.caojiantao.husky.system.entity.quartz.SystemQuartz;
+import cn.caojiantao.husky.system.entity.quartz.SystemQuartzLog;
 import cn.caojiantao.husky.system.service.SystemQuartzLogService;
 import cn.caojiantao.husky.system.service.SystemQuartzService;
 import cn.caojiantao.husky.common.base.RedisLock;

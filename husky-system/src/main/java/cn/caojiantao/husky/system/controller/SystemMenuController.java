@@ -1,6 +1,6 @@
 package cn.caojiantao.husky.system.controller;
 
-import cn.caojiantao.husky.system.model.security.SystemMenu;
+import cn.caojiantao.husky.system.entity.security.SystemMenu;
 import cn.caojiantao.husky.system.service.SystemMenuService;
 import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.baomidou.mybatisplus.extension.api.R;

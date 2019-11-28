@@ -1,6 +1,6 @@
 package cn.caojiantao.husky.system.controller;
 
-import cn.caojiantao.husky.system.model.dictionary.SystemDictionary;
+import cn.caojiantao.husky.system.entity.dictionary.SystemDictionary;
 import cn.caojiantao.husky.system.query.DictionaryQuery;
 import cn.caojiantao.husky.system.service.SystemDictionaryService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;

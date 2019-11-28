@@ -1,6 +1,6 @@
 package cn.caojiantao.husky.system.dto;
 
-import cn.caojiantao.husky.system.model.security.SystemUser;
+import cn.caojiantao.husky.system.entity.security.SystemUser;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

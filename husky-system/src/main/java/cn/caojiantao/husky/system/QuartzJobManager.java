@@ -1,6 +1,6 @@
 package cn.caojiantao.husky.system;
 
-import cn.caojiantao.husky.system.model.quartz.SystemQuartz;
+import cn.caojiantao.husky.system.entity.quartz.SystemQuartz;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;

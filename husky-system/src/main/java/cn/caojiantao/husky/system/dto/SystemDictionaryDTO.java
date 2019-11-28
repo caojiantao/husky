@@ -1,6 +1,6 @@
 package cn.caojiantao.husky.system.dto;
 
-import cn.caojiantao.husky.system.model.dictionary.SystemDictionary;
+import cn.caojiantao.husky.system.entity.dictionary.SystemDictionary;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

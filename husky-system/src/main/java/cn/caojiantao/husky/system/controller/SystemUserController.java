@@ -2,7 +2,7 @@ package cn.caojiantao.husky.system.controller;
 
 import cn.caojiantao.husky.system.LoginContext;
 import cn.caojiantao.husky.system.dto.SystemUserDTO;
-import cn.caojiantao.husky.system.model.security.SystemUser;
+import cn.caojiantao.husky.system.entity.security.SystemUser;
 import cn.caojiantao.husky.system.query.UserQuery;
 import cn.caojiantao.husky.system.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;

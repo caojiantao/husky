@@ -2,7 +2,7 @@ package cn.caojiantao.husky.system.service;
 
 import cn.caojiantao.husky.system.QuartzJobManager;
 import cn.caojiantao.husky.system.mapper.quartz.SystemQuartzMapper;
-import cn.caojiantao.husky.system.model.quartz.SystemQuartz;
+import cn.caojiantao.husky.system.entity.quartz.SystemQuartz;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;

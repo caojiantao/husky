@@ -50,7 +50,9 @@ public class AutoGenerateCode {
         gc.setOutputDir(projectPath + "/src/main/java");
         gc.setAuthor("caojiantao");
         gc.setOpen(false);
+        gc.setSwagger2(true);
         mpg.setGlobalConfig(gc);
+        gc.setFileOverride(true);
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
@@ -111,16 +113,17 @@ public class AutoGenerateCode {
         StrategyConfig strategy = new StrategyConfig();
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
-        // 实体
-        strategy.setEntityTableFieldAnnotationEnable(true);
-        strategy.setSuperEntityClass("cn.caojiantao.husky.common.base.BaseModel");
-        strategy.setSuperEntityColumns("id", "gmtCreate", "gmtModified");
         strategy.setEntityLombokModel(true);
-        // controller
         strategy.setRestControllerStyle(true);
+        strategy.setEntityTableFieldAnnotationEnable(true);
+        // 公共父类
+        strategy.setSuperControllerClass("cn.caojiantao.husky.common.base.BaseEntity");
+        // 写于父类中的公共字段
+        strategy.setSuperEntityColumns("id", "gmtCreate", "gmtModified");
+        strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
         strategy.setControllerMappingHyphenStyle(true);
-        strategy.setSuperControllerClass("com.baomidou.mybatisplus.extension.api.ApiController");
-        strategy.setInclude(scanner("表名"));
+        strategy.setTablePrefix(pc.getModuleName() + "_");
+        strategy.setEntityBuilderModel(true);
         mpg.setStrategy(strategy);
         mpg.setTemplateEngine(new FreemarkerTemplateEngine());
         mpg.execute();

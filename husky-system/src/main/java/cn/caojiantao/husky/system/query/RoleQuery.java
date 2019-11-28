@@ -1,6 +1,6 @@
 package cn.caojiantao.husky.system.query;
 
-import cn.caojiantao.husky.system.model.security.SystemRole;
+import cn.caojiantao.husky.system.entity.security.SystemRole;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.AllArgsConstructor;
 import lombok.Data;

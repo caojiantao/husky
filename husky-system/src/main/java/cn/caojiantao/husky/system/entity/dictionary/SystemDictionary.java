@@ -1,6 +1,6 @@
-package cn.caojiantao.husky.system.model.dictionary;
+package cn.caojiantao.husky.system.entity.dictionary;
 
-import cn.caojiantao.husky.common.base.BaseModel;
+import cn.caojiantao.husky.common.base.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @TableName("system_dictionary")
 @EqualsAndHashCode(callSuper = false)
-public class SystemDictionary extends BaseModel {
+public class SystemDictionary extends BaseEntity {
 
     private Integer parentId;
     private String code;
